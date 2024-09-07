@@ -17,12 +17,20 @@ class NameNode(pb2_grpc.DFSServicer):
         return pb2.CreateUserResponse(success=success, message=message)
 
     def ListDirectories(self, request, context):
-        directories = self.user_manager.list_directories(request.username)
+        directories = self.user_manager.list_directories(request.username, request.current_directory)
         return pb2.ListResponse(directories=directories)
 
     def MakeDirectory(self, request, context):
         success, message = self.user_manager.make_directory(request.username, request.directory_name)
         return pb2.MakeDirResponse(success=success, message=message)
+
+    def ChangeDirectory(self, request, context):
+        success, new_directory, message = self.user_manager.change_directory(request.username, request.target_directory)
+        return pb2.ChangeDirResponse(success=success, new_directory=new_directory, message=message)
+
+    def RemoveDirectory(self, request, context):
+        success, message = self.user_manager.remove_directory(request.username, request.directory_name)
+        return pb2.RemoveDirResponse(success=success, message=message)
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
@@ -33,4 +41,5 @@ def serve():
 
 if __name__ == '__main__':
     serve()
+
 

@@ -24,29 +24,37 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\tdfs.proto\x12\x03\x64\x66s\"2\n\x0cLoginRequest\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\"1\n\rLoginResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t\"7\n\x11\x43reateUserRequest\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\"6\n\x12\x43reateUserResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t\"\x1f\n\x0bListRequest\x12\x10\n\x08username\x18\x01 \x01(\t\"#\n\x0cListResponse\x12\x13\n\x0b\x64irectories\x18\x01 \x03(\t\":\n\x0eMakeDirRequest\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x16\n\x0e\x64irectory_name\x18\x02 \x01(\t\"3\n\x0fMakeDirResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t2\xe8\x01\n\x03\x44\x46S\x12.\n\x05Login\x12\x11.dfs.LoginRequest\x1a\x12.dfs.LoginResponse\x12=\n\nCreateUser\x12\x16.dfs.CreateUserRequest\x1a\x17.dfs.CreateUserResponse\x12\x36\n\x0fListDirectories\x12\x10.dfs.ListRequest\x1a\x11.dfs.ListResponse\x12:\n\rMakeDirectory\x12\x13.dfs.MakeDirRequest\x1a\x14.dfs.MakeDirResponseb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\tdfs.proto\x12\x03\x64\x66s\">\n\x10\x43hangeDirRequest\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x18\n\x10target_directory\x18\x02 \x01(\t\"L\n\x11\x43hangeDirResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x15\n\rnew_directory\x18\x02 \x01(\t\x12\x0f\n\x07message\x18\x03 \x01(\t\"<\n\x10RemoveDirRequest\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x16\n\x0e\x64irectory_name\x18\x02 \x01(\t\"5\n\x11RemoveDirResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t\"2\n\x0cLoginRequest\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\"1\n\rLoginResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t\"7\n\x11\x43reateUserRequest\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\"6\n\x12\x43reateUserResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t\":\n\x0bListRequest\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x19\n\x11\x63urrent_directory\x18\x02 \x01(\t\"#\n\x0cListResponse\x12\x13\n\x0b\x64irectories\x18\x01 \x03(\t\":\n\x0eMakeDirRequest\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x16\n\x0e\x64irectory_name\x18\x02 \x01(\t\"3\n\x0fMakeDirResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t2\xec\x02\n\x03\x44\x46S\x12.\n\x05Login\x12\x11.dfs.LoginRequest\x1a\x12.dfs.LoginResponse\x12=\n\nCreateUser\x12\x16.dfs.CreateUserRequest\x1a\x17.dfs.CreateUserResponse\x12\x36\n\x0fListDirectories\x12\x10.dfs.ListRequest\x1a\x11.dfs.ListResponse\x12:\n\rMakeDirectory\x12\x13.dfs.MakeDirRequest\x1a\x14.dfs.MakeDirResponse\x12@\n\x0f\x43hangeDirectory\x12\x15.dfs.ChangeDirRequest\x1a\x16.dfs.ChangeDirResponse\x12@\n\x0fRemoveDirectory\x12\x15.dfs.RemoveDirRequest\x1a\x16.dfs.RemoveDirResponseb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'dfs_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   DESCRIPTOR._loaded_options = None
-  _globals['_LOGINREQUEST']._serialized_start=18
-  _globals['_LOGINREQUEST']._serialized_end=68
-  _globals['_LOGINRESPONSE']._serialized_start=70
-  _globals['_LOGINRESPONSE']._serialized_end=119
-  _globals['_CREATEUSERREQUEST']._serialized_start=121
-  _globals['_CREATEUSERREQUEST']._serialized_end=176
-  _globals['_CREATEUSERRESPONSE']._serialized_start=178
-  _globals['_CREATEUSERRESPONSE']._serialized_end=232
-  _globals['_LISTREQUEST']._serialized_start=234
-  _globals['_LISTREQUEST']._serialized_end=265
-  _globals['_LISTRESPONSE']._serialized_start=267
-  _globals['_LISTRESPONSE']._serialized_end=302
-  _globals['_MAKEDIRREQUEST']._serialized_start=304
-  _globals['_MAKEDIRREQUEST']._serialized_end=362
-  _globals['_MAKEDIRRESPONSE']._serialized_start=364
-  _globals['_MAKEDIRRESPONSE']._serialized_end=415
-  _globals['_DFS']._serialized_start=418
-  _globals['_DFS']._serialized_end=650
+  _globals['_CHANGEDIRREQUEST']._serialized_start=18
+  _globals['_CHANGEDIRREQUEST']._serialized_end=80
+  _globals['_CHANGEDIRRESPONSE']._serialized_start=82
+  _globals['_CHANGEDIRRESPONSE']._serialized_end=158
+  _globals['_REMOVEDIRREQUEST']._serialized_start=160
+  _globals['_REMOVEDIRREQUEST']._serialized_end=220
+  _globals['_REMOVEDIRRESPONSE']._serialized_start=222
+  _globals['_REMOVEDIRRESPONSE']._serialized_end=275
+  _globals['_LOGINREQUEST']._serialized_start=277
+  _globals['_LOGINREQUEST']._serialized_end=327
+  _globals['_LOGINRESPONSE']._serialized_start=329
+  _globals['_LOGINRESPONSE']._serialized_end=378
+  _globals['_CREATEUSERREQUEST']._serialized_start=380
+  _globals['_CREATEUSERREQUEST']._serialized_end=435
+  _globals['_CREATEUSERRESPONSE']._serialized_start=437
+  _globals['_CREATEUSERRESPONSE']._serialized_end=491
+  _globals['_LISTREQUEST']._serialized_start=493
+  _globals['_LISTREQUEST']._serialized_end=551
+  _globals['_LISTRESPONSE']._serialized_start=553
+  _globals['_LISTRESPONSE']._serialized_end=588
+  _globals['_MAKEDIRREQUEST']._serialized_start=590
+  _globals['_MAKEDIRREQUEST']._serialized_end=648
+  _globals['_MAKEDIRRESPONSE']._serialized_start=650
+  _globals['_MAKEDIRRESPONSE']._serialized_end=701
+  _globals['_DFS']._serialized_start=704
+  _globals['_DFS']._serialized_end=1068
 # @@protoc_insertion_point(module_scope)

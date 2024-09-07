@@ -54,6 +54,16 @@ class DFSStub(object):
                 request_serializer=dfs__pb2.MakeDirRequest.SerializeToString,
                 response_deserializer=dfs__pb2.MakeDirResponse.FromString,
                 _registered_method=True)
+        self.ChangeDirectory = channel.unary_unary(
+                '/dfs.DFS/ChangeDirectory',
+                request_serializer=dfs__pb2.ChangeDirRequest.SerializeToString,
+                response_deserializer=dfs__pb2.ChangeDirResponse.FromString,
+                _registered_method=True)
+        self.RemoveDirectory = channel.unary_unary(
+                '/dfs.DFS/RemoveDirectory',
+                request_serializer=dfs__pb2.RemoveDirRequest.SerializeToString,
+                response_deserializer=dfs__pb2.RemoveDirResponse.FromString,
+                _registered_method=True)
 
 
 class DFSServicer(object):
@@ -83,6 +93,18 @@ class DFSServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def ChangeDirectory(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def RemoveDirectory(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_DFSServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -105,6 +127,16 @@ def add_DFSServicer_to_server(servicer, server):
                     servicer.MakeDirectory,
                     request_deserializer=dfs__pb2.MakeDirRequest.FromString,
                     response_serializer=dfs__pb2.MakeDirResponse.SerializeToString,
+            ),
+            'ChangeDirectory': grpc.unary_unary_rpc_method_handler(
+                    servicer.ChangeDirectory,
+                    request_deserializer=dfs__pb2.ChangeDirRequest.FromString,
+                    response_serializer=dfs__pb2.ChangeDirResponse.SerializeToString,
+            ),
+            'RemoveDirectory': grpc.unary_unary_rpc_method_handler(
+                    servicer.RemoveDirectory,
+                    request_deserializer=dfs__pb2.RemoveDirRequest.FromString,
+                    response_serializer=dfs__pb2.RemoveDirResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -215,6 +247,60 @@ class DFS(object):
             '/dfs.DFS/MakeDirectory',
             dfs__pb2.MakeDirRequest.SerializeToString,
             dfs__pb2.MakeDirResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ChangeDirectory(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/dfs.DFS/ChangeDirectory',
+            dfs__pb2.ChangeDirRequest.SerializeToString,
+            dfs__pb2.ChangeDirResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def RemoveDirectory(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/dfs.DFS/RemoveDirectory',
+            dfs__pb2.RemoveDirRequest.SerializeToString,
+            dfs__pb2.RemoveDirResponse.FromString,
             options,
             channel_credentials,
             insecure,

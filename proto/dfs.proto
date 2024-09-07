@@ -7,6 +7,29 @@ service DFS {
     rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
     rpc ListDirectories(ListRequest) returns (ListResponse);
     rpc MakeDirectory(MakeDirRequest) returns (MakeDirResponse);
+    rpc ChangeDirectory(ChangeDirRequest) returns (ChangeDirResponse);
+    rpc RemoveDirectory(RemoveDirRequest) returns (RemoveDirResponse);
+}
+
+message ChangeDirRequest {
+    string username = 1;
+    string target_directory = 2;
+}
+
+message ChangeDirResponse {
+    bool success = 1;
+    string new_directory = 2;
+    string message = 3;
+}
+
+message RemoveDirRequest {
+    string username = 1;
+    string directory_name = 2;
+}
+
+message RemoveDirResponse {
+    bool success = 1;
+    string message = 2;
 }
 
 message LoginRequest {
@@ -31,6 +54,7 @@ message CreateUserResponse {
 
 message ListRequest {
     string username = 1;
+    string current_directory = 2; 
 }
 
 message ListResponse {
