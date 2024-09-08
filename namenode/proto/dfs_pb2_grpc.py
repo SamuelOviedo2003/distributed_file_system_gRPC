@@ -64,6 +64,11 @@ class DFSStub(object):
                 request_serializer=dfs__pb2.RemoveDirRequest.SerializeToString,
                 response_deserializer=dfs__pb2.RemoveDirResponse.FromString,
                 _registered_method=True)
+        self.SendBlock = channel.unary_unary(
+                '/dfs.DFS/SendBlock',
+                request_serializer=dfs__pb2.SendBlockRequest.SerializeToString,
+                response_deserializer=dfs__pb2.SendBlockResponse.FromString,
+                _registered_method=True)
 
 
 class DFSServicer(object):
@@ -105,6 +110,12 @@ class DFSServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def SendBlock(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_DFSServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -137,6 +148,11 @@ def add_DFSServicer_to_server(servicer, server):
                     servicer.RemoveDirectory,
                     request_deserializer=dfs__pb2.RemoveDirRequest.FromString,
                     response_serializer=dfs__pb2.RemoveDirResponse.SerializeToString,
+            ),
+            'SendBlock': grpc.unary_unary_rpc_method_handler(
+                    servicer.SendBlock,
+                    request_deserializer=dfs__pb2.SendBlockRequest.FromString,
+                    response_serializer=dfs__pb2.SendBlockResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -301,6 +317,105 @@ class DFS(object):
             '/dfs.DFS/RemoveDirectory',
             dfs__pb2.RemoveDirRequest.SerializeToString,
             dfs__pb2.RemoveDirResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def SendBlock(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/dfs.DFS/SendBlock',
+            dfs__pb2.SendBlockRequest.SerializeToString,
+            dfs__pb2.SendBlockResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+
+class DataNodeStub(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def __init__(self, channel):
+        """Constructor.
+
+        Args:
+            channel: A grpc.Channel.
+        """
+        self.StoreBlock = channel.unary_unary(
+                '/dfs.DataNode/StoreBlock',
+                request_serializer=dfs__pb2.StoreBlockRequest.SerializeToString,
+                response_deserializer=dfs__pb2.StoreBlockResponse.FromString,
+                _registered_method=True)
+
+
+class DataNodeServicer(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def StoreBlock(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+
+def add_DataNodeServicer_to_server(servicer, server):
+    rpc_method_handlers = {
+            'StoreBlock': grpc.unary_unary_rpc_method_handler(
+                    servicer.StoreBlock,
+                    request_deserializer=dfs__pb2.StoreBlockRequest.FromString,
+                    response_serializer=dfs__pb2.StoreBlockResponse.SerializeToString,
+            ),
+    }
+    generic_handler = grpc.method_handlers_generic_handler(
+            'dfs.DataNode', rpc_method_handlers)
+    server.add_generic_rpc_handlers((generic_handler,))
+    server.add_registered_method_handlers('dfs.DataNode', rpc_method_handlers)
+
+
+ # This class is part of an EXPERIMENTAL API.
+class DataNode(object):
+    """Missing associated documentation comment in .proto file."""
+
+    @staticmethod
+    def StoreBlock(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/dfs.DataNode/StoreBlock',
+            dfs__pb2.StoreBlockRequest.SerializeToString,
+            dfs__pb2.StoreBlockResponse.FromString,
             options,
             channel_credentials,
             insecure,

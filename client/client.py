@@ -2,6 +2,19 @@ import grpc
 import proto.dfs_pb2 as pb2
 import proto.dfs_pb2_grpc as pb2_grpc
 
+def partition_file(file_path, block_size):
+    """ Divide un archivo en bloques de tamaño fijo """
+    blocks = []
+    with open(file_path, 'rb') as file:
+        block_num = 0
+        while True:
+            block = file.read(block_size)
+            if not block:
+                break
+            blocks.append((block_num, block))
+            block_num += 1
+    return blocks
+
 def run():
     current_directory = "/"
     
@@ -29,7 +42,16 @@ def run():
             while True:
                 command = input(f"{username}@dfs:{current_directory}> ")
                 
-                if command == "ls":
+                if command.startswith("send"):
+                    # Obtener la ruta del archivo y partirlo en bloques
+                    file_path = command.split(" ")[1]
+                    blocks = partition_file(file_path, 250)  # Tamaño de bloque = 250 bytes
+                    
+                    # Enviar bloques al NameNode
+                    for block_num, block in blocks:
+                        response = stub.SendBlock(pb2.SendBlockRequest(username=username, block_id=block_num, data=block))
+                        print(response.message)
+                elif command == "ls":
                     response = stub.ListDirectories(pb2.ListRequest(username=username, current_directory=current_directory))
                     print("Directories:", response.directories)
 

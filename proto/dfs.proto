@@ -9,6 +9,32 @@ service DFS {
     rpc MakeDirectory(MakeDirRequest) returns (MakeDirResponse);
     rpc ChangeDirectory(ChangeDirRequest) returns (ChangeDirResponse);
     rpc RemoveDirectory(RemoveDirRequest) returns (RemoveDirResponse);
+    rpc SendBlock(SendBlockRequest) returns (SendBlockResponse);
+}
+
+service DataNode {
+    rpc StoreBlock(StoreBlockRequest) returns (StoreBlockResponse);
+}
+
+message SendBlockRequest {
+    string username = 1;
+    int32 block_id = 2;
+    bytes data = 3;
+}
+
+message SendBlockResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+message StoreBlockRequest {
+    int32 block_id = 1;
+    bytes data = 2;
+}
+
+message StoreBlockResponse {
+    bool success = 1;
+    string message = 2;
 }
 
 message ChangeDirRequest {

@@ -3,10 +3,25 @@ import grpc
 import proto.dfs_pb2 as pb2
 import proto.dfs_pb2_grpc as pb2_grpc
 from users import UserManager
+import random 
 
 class NameNode(pb2_grpc.DFSServicer):
     def __init__(self):
+        self.data_nodes = ["localhost:50052", "localhost:50053"]
         self.user_manager = UserManager()
+
+
+    def SendBlock(self, request, context):
+        """ Recibe un bloque del cliente y lo distribuye en un DataNode """
+        # Elegimos un DataNode aleatorio para almacenar el bloque
+        data_node_address = random.choice(self.data_nodes)
+
+        # Conectamos con el DataNode y enviamos el bloque
+        with grpc.insecure_channel(data_node_address) as channel:
+            stub = pb2_grpc.DataNodeStub(channel)
+            response = stub.StoreBlock(pb2.StoreBlockRequest(block_id=request.block_id, data=request.data))
+
+        return pb2.SendBlockResponse(success=response.success, message=response.message)
 
     def Login(self, request, context):
         success, message = self.user_manager.authenticate(request.username, request.password)
