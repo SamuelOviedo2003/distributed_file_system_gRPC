@@ -41,16 +41,39 @@ def run():
         if login_response.success:
             while True:
                 command = input(f"{username}@dfs:{current_directory}> ")
-                
+
                 if command.startswith("send"):
-                    # Obtener la ruta del archivo y partirlo en bloques
+                    # Obtener la ruta del archivo, el nombre del archivo y el directorio actual
                     file_path = command.split(" ")[1]
-                    blocks = partition_file(file_path, 250)  # Tamaño de bloque = 250 bytes
+                    file_name = file_path.split("/")[-1]
                     
-                    # Enviar bloques al NameNode
+                    blocks = partition_file(file_path, 250)  # Tamaño de bloque = 250 bytes
+                    is_first_block = True  # Indicador de que estamos enviando el primer bloque
+                    
+                    # Enviar bloques al NameNode, incluyendo el directorio actual
                     for block_num, block in blocks:
-                        response = stub.SendBlock(pb2.SendBlockRequest(username=username, block_id=block_num, data=block))
+                        response = stub.SendBlock(pb2.SendBlockRequest(
+                            username=username, 
+                            directory=current_directory,  # Pasamos el directorio actual
+                            file_name=file_name, 
+                            block_id=block_num, 
+                            data=block,
+                            is_first_block=is_first_block))  # Indicamos si es el primer bloque
                         print(response.message)
+                        is_first_block = False  # Después del primer bloque, lo desactivamos
+
+                elif command.startswith("ls -l"):
+                    # Mostrar información detallada del archivo
+                    file_name = command.split(" ")[2]
+                    response = stub.GetFileInfo(pb2.GetFileInfoRequest(username=username, directory=current_directory, file_name=file_name))
+                    if response.success:
+                        print(f"Archivo: {file_name}")
+                        print(f"Total de bloques: {response.total_blocks}")
+                        for block in response.blocks:
+                            print(f"Bloque en {block.node}, ruta: {block.path}")
+                    else:
+                        print(response.message)
+
                 elif command == "ls":
                     response = stub.ListDirectories(pb2.ListRequest(username=username, current_directory=current_directory))
                     print("Directories:", response.directories)
@@ -77,6 +100,12 @@ def run():
                 elif command.startswith("rmdir"):
                     dir_name = command.split(" ")[1]
                     response = stub.RemoveDirectory(pb2.RemoveDirRequest(username=username, directory_name=f"{current_directory}/{dir_name}"))
+                    print(response.message)
+
+                elif command.startswith("rm"):
+                    # Eliminar un archivo lógicamente
+                    file_name = command.split(" ")[1]
+                    response = stub.RemoveFile(pb2.RemoveFileRequest(username=username, directory=current_directory, file_name=file_name))
                     print(response.message)
 
                 elif command == "exit":

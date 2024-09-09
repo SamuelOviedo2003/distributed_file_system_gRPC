@@ -10,6 +10,37 @@ service DFS {
     rpc ChangeDirectory(ChangeDirRequest) returns (ChangeDirResponse);
     rpc RemoveDirectory(RemoveDirRequest) returns (RemoveDirResponse);
     rpc SendBlock(SendBlockRequest) returns (SendBlockResponse);
+    rpc RemoveFile(RemoveFileRequest) returns (RemoveFileResponse);
+    rpc GetFileInfo(GetFileInfoRequest) returns (GetFileInfoResponse);
+}
+
+message GetFileInfoRequest {
+    string username = 1;
+    string directory = 2;
+    string file_name = 3;
+}
+
+message GetFileInfoResponse {
+    bool success = 1;
+    int32 total_blocks = 2;
+    repeated BlockInfo blocks = 3;
+    string message = 4;
+}
+
+message BlockInfo {
+    string node = 1;
+    string path = 2;
+}
+
+message RemoveFileRequest {
+    string username = 1;
+    string directory = 2;
+    string file_name = 3;
+}
+
+message RemoveFileResponse {
+    bool success = 1;
+    string message = 2;
 }
 
 service DataNode {
@@ -18,8 +49,11 @@ service DataNode {
 
 message SendBlockRequest {
     string username = 1;
-    int32 block_id = 2;
-    bytes data = 3;
+    string directory = 2;
+    string file_name = 3;
+    int32 block_id = 4;
+    bytes data = 5;
+    bool is_first_block = 6; 
 }
 
 message SendBlockResponse {

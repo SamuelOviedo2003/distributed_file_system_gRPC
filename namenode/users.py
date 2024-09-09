@@ -10,6 +10,21 @@ class UserManager:
         # Usuarios predefinidos para pruebas
         self.users['admin'] = User('admin', 'password')
 
+    def add_file_to_directory(self, username, directory, file_name):
+        """Agrega un archivo a la estructura de directorios lógica."""
+        if username in self.users:
+            user = self.users[username]
+            # Verificar si el directorio existe
+            if directory not in user.directories:
+                user.directories[directory] = []
+            # Agregar el archivo si no está ya presente
+            if file_name not in user.directories[directory]:
+                user.directories[directory].append(file_name)
+                return True, f"Archivo {file_name} agregado correctamente a {directory}."
+            else:
+                return False, "El archivo ya existe en este directorio."
+        return False, "Usuario no encontrado."
+
     def authenticate(self, username, password):
         if username in self.users and self.users[username].password == password:
             return True, "Login successful"
@@ -72,6 +87,32 @@ class UserManager:
                 return False, "Directory is not empty"
             return False, "Directory not found"
         return False, "User not found"
+    
+    def remove_file(self, username, directory, file_name):
+        """Elimina un archivo de un directorio de manera lógica"""
+        if username in self.users:
+            user = self.users[username]
+            
+            # Verificar si el directorio existe
+            if directory in user.directories:
+                
+                # Verificar si el archivo está en el directorio
+                if file_name in user.directories[directory]:
+                    user.directories[directory].remove(file_name)  # Elimina el archivo del directorio
+
+                    
+                    # También eliminamos el archivo de file_metadata
+                    file_key = f"{directory}/{file_name}"
+                    if file_key in user.file_metadata:
+                        del user.file_metadata[file_key]
+                        print("borrado de meta")
+                    
+                    return True, f"Archivo {file_name} eliminado correctamente de {directory}."
+                else:
+                    return False, "El archivo no se encuentra en este directorio."
+            else:
+                return False, "Directorio no encontrado."
+        return False, "Usuario no encontrado."
 
 
 

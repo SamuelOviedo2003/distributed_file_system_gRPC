@@ -69,6 +69,16 @@ class DFSStub(object):
                 request_serializer=dfs__pb2.SendBlockRequest.SerializeToString,
                 response_deserializer=dfs__pb2.SendBlockResponse.FromString,
                 _registered_method=True)
+        self.RemoveFile = channel.unary_unary(
+                '/dfs.DFS/RemoveFile',
+                request_serializer=dfs__pb2.RemoveFileRequest.SerializeToString,
+                response_deserializer=dfs__pb2.RemoveFileResponse.FromString,
+                _registered_method=True)
+        self.GetFileInfo = channel.unary_unary(
+                '/dfs.DFS/GetFileInfo',
+                request_serializer=dfs__pb2.GetFileInfoRequest.SerializeToString,
+                response_deserializer=dfs__pb2.GetFileInfoResponse.FromString,
+                _registered_method=True)
 
 
 class DFSServicer(object):
@@ -116,6 +126,18 @@ class DFSServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def RemoveFile(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetFileInfo(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_DFSServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -153,6 +175,16 @@ def add_DFSServicer_to_server(servicer, server):
                     servicer.SendBlock,
                     request_deserializer=dfs__pb2.SendBlockRequest.FromString,
                     response_serializer=dfs__pb2.SendBlockResponse.SerializeToString,
+            ),
+            'RemoveFile': grpc.unary_unary_rpc_method_handler(
+                    servicer.RemoveFile,
+                    request_deserializer=dfs__pb2.RemoveFileRequest.FromString,
+                    response_serializer=dfs__pb2.RemoveFileResponse.SerializeToString,
+            ),
+            'GetFileInfo': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetFileInfo,
+                    request_deserializer=dfs__pb2.GetFileInfoRequest.FromString,
+                    response_serializer=dfs__pb2.GetFileInfoResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -344,6 +376,60 @@ class DFS(object):
             '/dfs.DFS/SendBlock',
             dfs__pb2.SendBlockRequest.SerializeToString,
             dfs__pb2.SendBlockResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def RemoveFile(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/dfs.DFS/RemoveFile',
+            dfs__pb2.RemoveFileRequest.SerializeToString,
+            dfs__pb2.RemoveFileResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetFileInfo(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/dfs.DFS/GetFileInfo',
+            dfs__pb2.GetFileInfoRequest.SerializeToString,
+            dfs__pb2.GetFileInfoResponse.FromString,
             options,
             channel_credentials,
             insecure,
