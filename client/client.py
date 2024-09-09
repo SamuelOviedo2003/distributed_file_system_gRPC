@@ -51,7 +51,7 @@ def run():
                         for block in response.blocks:
                             with grpc.insecure_channel(block.node) as block_channel:
                                 block_stub = pb2_grpc.DataNodeStub(block_channel)
-                                block_response = block_stub.ReadBlock(pb2.ReadBlockRequest(block_path=block.path))
+                                block_response = block_stub.ReadBlock(pb2.ReadBlockRequest(block_path=f"{username}_{block.path}"))
                                 if block_response.success:
                                     file_data += block_response.data
                                 else:

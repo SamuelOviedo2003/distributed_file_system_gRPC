@@ -13,8 +13,8 @@ class DataNode(pb2_grpc.DataNodeServicer):
             os.makedirs(self.storage_dir)
 
     def StoreBlock(self, request, context):
-        """ Almacena un bloque en el DataNode """
-        block_path = os.path.join(self.storage_dir, f"block_{request.block_id}")
+        """Almacena un bloque en el DataNode, etiquetado con el usuario propietario."""
+        block_path = os.path.join(self.storage_dir, f"{request.username}_block_{request.block_id}")
         with open(block_path, 'wb') as block_file:
             block_file.write(request.data)
         return pb2.StoreBlockResponse(success=True, message=f"Block {request.block_id} stored successfully.")

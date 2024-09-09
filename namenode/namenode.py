@@ -20,7 +20,11 @@ class NameNode(pb2_grpc.DFSServicer):
         # Conectamos con el DataNode y enviamos el bloque
         with grpc.insecure_channel(data_node_address) as channel:
             stub = pb2_grpc.DataNodeStub(channel)
-            response = stub.StoreBlock(pb2.StoreBlockRequest(block_id=request.block_id, data=request.data))
+            response = stub.StoreBlock(pb2.StoreBlockRequest(
+                block_id=request.block_id,
+                data=request.data,
+                username=request.username  # Incluimos el nombre del usuario
+            ))
 
         # Guardar metadatos del archivo en file_metadata
         if response.success:

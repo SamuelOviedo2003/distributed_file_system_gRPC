@@ -75,6 +75,7 @@ message SendBlockResponse {
 message StoreBlockRequest {
     int32 block_id = 1;
     bytes data = 2;
+    string username = 3;  // Añadimos el campo de usuario
 }
 
 message StoreBlockResponse {
