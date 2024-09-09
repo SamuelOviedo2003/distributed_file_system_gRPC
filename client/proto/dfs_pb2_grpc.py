@@ -455,12 +455,23 @@ class DataNodeStub(object):
                 request_serializer=dfs__pb2.StoreBlockRequest.SerializeToString,
                 response_deserializer=dfs__pb2.StoreBlockResponse.FromString,
                 _registered_method=True)
+        self.ReadBlock = channel.unary_unary(
+                '/dfs.DataNode/ReadBlock',
+                request_serializer=dfs__pb2.ReadBlockRequest.SerializeToString,
+                response_deserializer=dfs__pb2.ReadBlockResponse.FromString,
+                _registered_method=True)
 
 
 class DataNodeServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def StoreBlock(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ReadBlock(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -473,6 +484,11 @@ def add_DataNodeServicer_to_server(servicer, server):
                     servicer.StoreBlock,
                     request_deserializer=dfs__pb2.StoreBlockRequest.FromString,
                     response_serializer=dfs__pb2.StoreBlockResponse.SerializeToString,
+            ),
+            'ReadBlock': grpc.unary_unary_rpc_method_handler(
+                    servicer.ReadBlock,
+                    request_deserializer=dfs__pb2.ReadBlockRequest.FromString,
+                    response_serializer=dfs__pb2.ReadBlockResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -502,6 +518,33 @@ class DataNode(object):
             '/dfs.DataNode/StoreBlock',
             dfs__pb2.StoreBlockRequest.SerializeToString,
             dfs__pb2.StoreBlockResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ReadBlock(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/dfs.DataNode/ReadBlock',
+            dfs__pb2.ReadBlockRequest.SerializeToString,
+            dfs__pb2.ReadBlockResponse.FromString,
             options,
             channel_credentials,
             insecure,

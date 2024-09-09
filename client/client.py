@@ -42,7 +42,28 @@ def run():
             while True:
                 command = input(f"{username}@dfs:{current_directory}> ")
 
-                if command.startswith("send"):
+                if command.startswith("get"):
+                    # Obtener información del archivo
+                    file_name = command.split(" ")[1]
+                    response = stub.GetFileInfo(pb2.GetFileInfoRequest(username=username, directory=current_directory, file_name=file_name))
+                    if response.success:
+                        file_data = b""
+                        for block in response.blocks:
+                            with grpc.insecure_channel(block.node) as block_channel:
+                                block_stub = pb2_grpc.DataNodeStub(block_channel)
+                                block_response = block_stub.ReadBlock(pb2.ReadBlockRequest(block_path=block.path))
+                                if block_response.success:
+                                    file_data += block_response.data
+                                else:
+                                    print(f"Error leyendo bloque: {block_response.message}")
+                        # Guardar o mostrar el archivo
+                        with open(f"{file_name}_reconstructed", 'wb') as f:
+                            f.write(file_data)
+                        print(f"Archivo {file_name} reconstruido correctamente.")
+                    else:
+                        print(response.message)
+
+                elif command.startswith("send"):
                     # Obtener la ruta del archivo, el nombre del archivo y el directorio actual
                     file_path = command.split(" ")[1]
                     file_name = file_path.split("/")[-1]

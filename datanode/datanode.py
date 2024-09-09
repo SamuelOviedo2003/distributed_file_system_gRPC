@@ -19,6 +19,15 @@ class DataNode(pb2_grpc.DataNodeServicer):
             block_file.write(request.data)
         return pb2.StoreBlockResponse(success=True, message=f"Block {request.block_id} stored successfully.")
 
+    def ReadBlock(self, request, context):
+        """Lee un bloque almacenado y lo devuelve al cliente"""
+        block_path = os.path.join(self.storage_dir, request.block_path)
+        if os.path.exists(block_path):
+            with open(block_path, 'rb') as block_file:
+                data = block_file.read()
+            return pb2.ReadBlockResponse(success=True, data=data)
+        return pb2.ReadBlockResponse(success=False, message="Bloque no encontrado")
+
 def serve(port):
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     pb2_grpc.add_DataNodeServicer_to_server(DataNode("data_storage"), server)

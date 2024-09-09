@@ -45,6 +45,17 @@ message RemoveFileResponse {
 
 service DataNode {
     rpc StoreBlock(StoreBlockRequest) returns (StoreBlockResponse);
+    rpc ReadBlock(ReadBlockRequest) returns (ReadBlockResponse);
+}
+
+message ReadBlockRequest {
+    string block_path = 1;
+}
+
+message ReadBlockResponse {
+    bool success = 1;
+    bytes data = 2;
+    string message = 3;
 }
 
 message SendBlockRequest {
