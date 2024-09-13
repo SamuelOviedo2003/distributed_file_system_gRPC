@@ -84,7 +84,8 @@ message ReadBlockResponse {
 message StoreBlockRequest {
     int32 block_id = 1;
     bytes data = 2;
-    string username = 3;  // Añadimos el campo de usuario
+    string username = 3;
+    string file_name = 4;  // Añadimos el nombre del archivo
 }
 
 message StoreBlockResponse {

@@ -51,12 +51,15 @@ def run():
                         for block in response.blocks:
                             with grpc.insecure_channel(block.node) as block_channel:
                                 block_stub = pb2_grpc.DataNodeStub(block_channel)
-                                block_response = block_stub.ReadBlock(pb2.ReadBlockRequest(block_path=f"{username}_{block.path}"))
+                                # Usamos el nuevo formato nombreUsuario_nombreArchivo_blockid
+                                block_response = block_stub.ReadBlock(pb2.ReadBlockRequest(
+                                    block_path=f"{username}_{file_name}_block_{block.path.split('_')[-1]}"  # Formato actualizado
+                                ))
                                 if block_response.success:
                                     file_data += block_response.data
                                 else:
                                     print(f"Error leyendo bloque: {block_response.message}")
-                        # Guardar o mostrar el archivo
+                        # Guardar o mostrar el archivo reconstruido
                         with open(f"{file_name}_reconstructed", 'wb') as f:
                             f.write(file_data)
                         print(f"Archivo {file_name} reconstruido correctamente.")
@@ -83,8 +86,9 @@ def run():
                                 data_stub = pb2_grpc.DataNodeStub(data_node_channel)
                                 data_response = data_stub.StoreBlock(pb2.StoreBlockRequest(
                                     block_id=block_id,
-                                    data=block_data,  # Solo pasamos los datos (bytes)
-                                    username=username
+                                    data=block_data,
+                                    username=username,
+                                    file_name=file_name  # Pasamos el nombre del archivo al DataNode
                                 ))
                                 if not data_response.success:
                                     all_blocks_success = False
