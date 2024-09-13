@@ -9,9 +9,19 @@ service DFS {
     rpc MakeDirectory(MakeDirRequest) returns (MakeDirResponse);
     rpc ChangeDirectory(ChangeDirRequest) returns (ChangeDirResponse);
     rpc RemoveDirectory(RemoveDirRequest) returns (RemoveDirResponse);
-    rpc SendBlock(SendBlockRequest) returns (SendBlockResponse);
     rpc RemoveFile(RemoveFileRequest) returns (RemoveFileResponse);
     rpc GetFileInfo(GetFileInfoRequest) returns (GetFileInfoResponse);
+    rpc GetDataNodesForFile(GetDataNodesRequest) returns (GetDataNodesResponse);
+    rpc RegisterFileMetadata(RegisterFileMetadataRequest) returns (RegisterFileMetadataResponse);
+}
+
+message GetDataNodesRequest {
+    int32 total_blocks = 1;
+}
+
+message GetDataNodesResponse {
+    bool success = 1;
+    repeated string data_nodes = 2;
 }
 
 message GetFileInfoRequest {
@@ -43,6 +53,19 @@ message RemoveFileResponse {
     string message = 2;
 }
 
+message RegisterFileMetadataRequest {
+    string username = 1;
+    string directory = 2;
+    string file_name = 3;
+    int32 total_blocks = 4;
+    repeated string data_nodes = 5;  // Lista de DataNodes donde se almacenaron los bloques
+}
+
+message RegisterFileMetadataResponse {
+    bool success = 1;
+    string message = 2;
+}
+
 service DataNode {
     rpc StoreBlock(StoreBlockRequest) returns (StoreBlockResponse);
     rpc ReadBlock(ReadBlockRequest) returns (ReadBlockResponse);
@@ -56,20 +79,6 @@ message ReadBlockResponse {
     bool success = 1;
     bytes data = 2;
     string message = 3;
-}
-
-message SendBlockRequest {
-    string username = 1;
-    string directory = 2;
-    string file_name = 3;
-    int32 block_id = 4;
-    bytes data = 5;
-    bool is_first_block = 6; 
-}
-
-message SendBlockResponse {
-    bool success = 1;
-    string message = 2;
 }
 
 message StoreBlockRequest {

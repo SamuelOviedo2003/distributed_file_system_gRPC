@@ -64,11 +64,6 @@ class DFSStub(object):
                 request_serializer=dfs__pb2.RemoveDirRequest.SerializeToString,
                 response_deserializer=dfs__pb2.RemoveDirResponse.FromString,
                 _registered_method=True)
-        self.SendBlock = channel.unary_unary(
-                '/dfs.DFS/SendBlock',
-                request_serializer=dfs__pb2.SendBlockRequest.SerializeToString,
-                response_deserializer=dfs__pb2.SendBlockResponse.FromString,
-                _registered_method=True)
         self.RemoveFile = channel.unary_unary(
                 '/dfs.DFS/RemoveFile',
                 request_serializer=dfs__pb2.RemoveFileRequest.SerializeToString,
@@ -78,6 +73,16 @@ class DFSStub(object):
                 '/dfs.DFS/GetFileInfo',
                 request_serializer=dfs__pb2.GetFileInfoRequest.SerializeToString,
                 response_deserializer=dfs__pb2.GetFileInfoResponse.FromString,
+                _registered_method=True)
+        self.GetDataNodesForFile = channel.unary_unary(
+                '/dfs.DFS/GetDataNodesForFile',
+                request_serializer=dfs__pb2.GetDataNodesRequest.SerializeToString,
+                response_deserializer=dfs__pb2.GetDataNodesResponse.FromString,
+                _registered_method=True)
+        self.RegisterFileMetadata = channel.unary_unary(
+                '/dfs.DFS/RegisterFileMetadata',
+                request_serializer=dfs__pb2.RegisterFileMetadataRequest.SerializeToString,
+                response_deserializer=dfs__pb2.RegisterFileMetadataResponse.FromString,
                 _registered_method=True)
 
 
@@ -120,12 +125,6 @@ class DFSServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def SendBlock(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
     def RemoveFile(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -133,6 +132,18 @@ class DFSServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def GetFileInfo(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetDataNodesForFile(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def RegisterFileMetadata(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -171,11 +182,6 @@ def add_DFSServicer_to_server(servicer, server):
                     request_deserializer=dfs__pb2.RemoveDirRequest.FromString,
                     response_serializer=dfs__pb2.RemoveDirResponse.SerializeToString,
             ),
-            'SendBlock': grpc.unary_unary_rpc_method_handler(
-                    servicer.SendBlock,
-                    request_deserializer=dfs__pb2.SendBlockRequest.FromString,
-                    response_serializer=dfs__pb2.SendBlockResponse.SerializeToString,
-            ),
             'RemoveFile': grpc.unary_unary_rpc_method_handler(
                     servicer.RemoveFile,
                     request_deserializer=dfs__pb2.RemoveFileRequest.FromString,
@@ -185,6 +191,16 @@ def add_DFSServicer_to_server(servicer, server):
                     servicer.GetFileInfo,
                     request_deserializer=dfs__pb2.GetFileInfoRequest.FromString,
                     response_serializer=dfs__pb2.GetFileInfoResponse.SerializeToString,
+            ),
+            'GetDataNodesForFile': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetDataNodesForFile,
+                    request_deserializer=dfs__pb2.GetDataNodesRequest.FromString,
+                    response_serializer=dfs__pb2.GetDataNodesResponse.SerializeToString,
+            ),
+            'RegisterFileMetadata': grpc.unary_unary_rpc_method_handler(
+                    servicer.RegisterFileMetadata,
+                    request_deserializer=dfs__pb2.RegisterFileMetadataRequest.FromString,
+                    response_serializer=dfs__pb2.RegisterFileMetadataResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -360,33 +376,6 @@ class DFS(object):
             _registered_method=True)
 
     @staticmethod
-    def SendBlock(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/dfs.DFS/SendBlock',
-            dfs__pb2.SendBlockRequest.SerializeToString,
-            dfs__pb2.SendBlockResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
     def RemoveFile(request,
             target,
             options=(),
@@ -430,6 +419,60 @@ class DFS(object):
             '/dfs.DFS/GetFileInfo',
             dfs__pb2.GetFileInfoRequest.SerializeToString,
             dfs__pb2.GetFileInfoResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetDataNodesForFile(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/dfs.DFS/GetDataNodesForFile',
+            dfs__pb2.GetDataNodesRequest.SerializeToString,
+            dfs__pb2.GetDataNodesResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def RegisterFileMetadata(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/dfs.DFS/RegisterFileMetadata',
+            dfs__pb2.RegisterFileMetadataRequest.SerializeToString,
+            dfs__pb2.RegisterFileMetadataResponse.FromString,
             options,
             channel_credentials,
             insecure,

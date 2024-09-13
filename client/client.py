@@ -63,25 +63,46 @@ def run():
                     else:
                         print(response.message)
 
-                elif command.startswith("send"):
-                    # Obtener la ruta del archivo, el nombre del archivo y el directorio actual
+                elif command.startswith("put"):
+                    # Obtener la ruta del archivo, el nombre del archivo y la carpeta de destino
                     file_path = command.split(" ")[1]
                     file_name = file_path.split("/")[-1]
                     
                     blocks = partition_file(file_path, 250)  # Tamaño de bloque = 250 bytes
-                    is_first_block = True  # Indicador de que estamos enviando el primer bloque
-                    
-                    # Enviar bloques al NameNode, incluyendo el directorio actual
-                    for block_num, block in blocks:
-                        response = stub.SendBlock(pb2.SendBlockRequest(
-                            username=username, 
-                            directory=current_directory,  # Pasamos el directorio actual
-                            file_name=file_name, 
-                            block_id=block_num, 
-                            data=block,
-                            is_first_block=is_first_block))  # Indicamos si es el primer bloque
-                        print(response.message)
-                        is_first_block = False  # Después del primer bloque, lo desactivamos
+                    total_blocks = len(blocks)
+
+                    # Obtener lista de DataNodes para este archivo
+                    response = stub.GetDataNodesForFile(pb2.GetDataNodesRequest(total_blocks=total_blocks))
+                    if response.success:
+                        data_nodes = response.data_nodes
+                        all_blocks_success = True  # Indicador de éxito de todos los bloques
+                        for block_num, block_tuple in enumerate(blocks):
+                            block_id, block_data = block_tuple  # Desempaquetamos el número y el contenido del bloque
+                            data_node_address = data_nodes[block_num]
+                            with grpc.insecure_channel(data_node_address) as data_node_channel:
+                                data_stub = pb2_grpc.DataNodeStub(data_node_channel)
+                                data_response = data_stub.StoreBlock(pb2.StoreBlockRequest(
+                                    block_id=block_id,
+                                    data=block_data,  # Solo pasamos los datos (bytes)
+                                    username=username
+                                ))
+                                if not data_response.success:
+                                    all_blocks_success = False
+                                    print(f"Error enviando el bloque {block_id} al DataNode {data_node_address}")
+
+                        # Si todos los bloques fueron enviados exitosamente, actualizamos los metadatos
+                        if all_blocks_success:
+                            metadata_response = stub.RegisterFileMetadata(pb2.RegisterFileMetadataRequest(
+                                username=username,
+                                directory=current_directory,
+                                file_name=file_name,
+                                total_blocks=total_blocks,
+                                data_nodes=data_nodes
+                            ))
+                            print(metadata_response.message)
+
+                    else:
+                        print("Error obteniendo DataNodes para el archivo.")
 
                 elif command.startswith("ls -l"):
                     # Mostrar información detallada del archivo

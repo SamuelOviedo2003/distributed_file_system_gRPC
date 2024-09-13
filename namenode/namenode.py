@@ -13,43 +13,37 @@ class NameNode(pb2_grpc.DFSServicer):
         self.user_manager = UserManager()
         self.file_metadata = {}
 
-    def SendBlock(self, request, context):
-        """Recibe un bloque del cliente y lo distribuye secuencialmente entre los DataNodes."""
-        data_node_address = next(self.node_iterator)
+    def GetDataNodesForFile(self, request, context):
+        """Devuelve la lista de DataNodes para almacenar los bloques de un archivo."""
+        data_nodes = []
+        for _ in range(request.total_blocks):
+            data_node_address = next(self.node_iterator)
+            data_nodes.append(data_node_address)
+        return pb2.GetDataNodesResponse(success=True, data_nodes=data_nodes)
 
-        # Conectamos con el DataNode y enviamos el bloque
-        with grpc.insecure_channel(data_node_address) as channel:
-            stub = pb2_grpc.DataNodeStub(channel)
-            response = stub.StoreBlock(pb2.StoreBlockRequest(
-                block_id=request.block_id,
-                data=request.data,
-                username=request.username  # Incluimos el nombre del usuario
-            ))
-
-        # Guardar metadatos del archivo en file_metadata
-        if response.success:
-            file_key = f"{request.directory}/{request.file_name}"
-            if file_key not in self.file_metadata:
-                self.file_metadata[file_key] = {
-                    "total_blocks": 0,
-                    "blocks": {}
-                }
-            file_info = self.file_metadata[file_key]
-            file_info["total_blocks"] += 1
-            file_info["blocks"][request.block_id] = {
-                "node": data_node_address,
-                "path": f"block_{request.block_id}"
+    def RegisterFileMetadata(self, request, context):
+        """Registra los metadatos del archivo y actualiza la estructura de directorios"""
+        file_key = f"{request.directory}/{request.file_name}"
+        if file_key not in self.file_metadata:
+            self.file_metadata[file_key] = {
+                "total_blocks": request.total_blocks,
+                "blocks": {}
             }
 
-            # Solo agregamos el archivo a la estructura de directorios al enviar el primer bloque
-            if request.is_first_block:
-                success, message = self.user_manager.add_file_to_directory(
-                    request.username,
-                    request.directory,
-                    request.file_name
-                )
-                return pb2.SendBlockResponse(success=success, message=message)
-            return pb2.SendBlockResponse(success=response.success, message="Bloque enviado correctamente.")
+        # Guardamos la ubicación de los bloques y los DataNodes correspondientes
+        for block_id, data_node_address in enumerate(request.data_nodes):
+            self.file_metadata[file_key]["blocks"][block_id] = {
+                "node": data_node_address,
+                "path": f"block_{block_id}"
+            }
+
+        # Agregamos el archivo a la estructura de directorios
+        success, message = self.user_manager.add_file_to_directory(
+            request.username,
+            request.directory,
+            request.file_name
+        )
+        return pb2.RegisterFileMetadataResponse(success=success, message=message)
         
     def GetFileInfo(self, request, context):
         """Devuelve la estructura de bloques y nodos donde está almacenado el archivo."""
@@ -66,14 +60,20 @@ class NameNode(pb2_grpc.DFSServicer):
             )
         return pb2.GetFileInfoResponse(success=False, message="Archivo no encontrado")
 
+
     def RemoveFile(self, request, context):
-        """Llama a remove_file para eliminar un archivo lógicamente"""
-        success, message = self.user_manager.remove_file(
-            request.username,
-            request.directory,
-            request.file_name
-        )
-        return pb2.RemoveFileResponse(success=success, message=message)
+        """Elimina un archivo de los metadatos y de la estructura de directorios"""
+        file_key = f"{request.directory}/{request.file_name}"
+        
+        if file_key in self.file_metadata:
+            # Eliminar el archivo de los metadatos
+            del self.file_metadata[file_key]
+
+            # Eliminar el archivo de la estructura de directorios
+            success, message = self.user_manager.remove_file(request.username, request.directory, request.file_name)
+            return pb2.RemoveFileResponse(success=success, message=message)
+        else:
+            return pb2.RemoveFileResponse(success=False, message="Archivo no encontrado")
 
     def Login(self, request, context):
         success, message = self.user_manager.authenticate(request.username, request.password)

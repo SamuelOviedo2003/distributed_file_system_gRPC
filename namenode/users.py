@@ -99,14 +99,6 @@ class UserManager:
                 # Verificar si el archivo está en el directorio
                 if file_name in user.directories[directory]:
                     user.directories[directory].remove(file_name)  # Elimina el archivo del directorio
-
-                    
-                    # También eliminamos el archivo de file_metadata
-                    file_key = f"{directory}/{file_name}"
-                    if file_key in user.file_metadata:
-                        del user.file_metadata[file_key]
-                        print("borrado de meta")
-                    
                     return True, f"Archivo {file_name} eliminado correctamente de {directory}."
                 else:
                     return False, "El archivo no se encuentra en este directorio."
