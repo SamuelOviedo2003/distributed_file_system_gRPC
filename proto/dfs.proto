@@ -22,6 +22,7 @@ message GetDataNodesRequest {
 message GetDataNodesResponse {
     bool success = 1;
     repeated string data_nodes = 2;
+    repeated string replication_metadata = 3;
 }
 
 message GetFileInfoRequest {
@@ -86,6 +87,8 @@ message StoreBlockRequest {
     bytes data = 2;
     string username = 3;
     string file_name = 4;  // Añadimos el nombre del archivo
+    string replication_addrs = 5; 
+    uint32 checksum = 6;
 }
 
 message StoreBlockResponse {

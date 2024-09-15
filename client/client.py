@@ -1,6 +1,8 @@
 import grpc
 import proto.dfs_pb2 as pb2
 import proto.dfs_pb2_grpc as pb2_grpc
+import crc32c
+
 
 def partition_file(file_path, block_size):
     """ Divide un archivo en bloques de tamaño fijo """
@@ -78,20 +80,25 @@ def run():
                     response = stub.GetDataNodesForFile(pb2.GetDataNodesRequest(total_blocks=total_blocks))
                     if response.success:
                         data_nodes = response.data_nodes
+                        replication_data_nodes = response.replication_metadata
                         all_blocks_success = True  # Indicador de éxito de todos los bloques
                         for block_num, block_tuple in enumerate(blocks):
                             block_id, block_data = block_tuple  # Desempaquetamos el número y el contenido del bloque
                             data_node_address = data_nodes[block_num]
+                            replication_data_node = replication_data_nodes[block_num]
                             with grpc.insecure_channel(data_node_address) as data_node_channel:
                                 data_stub = pb2_grpc.DataNodeStub(data_node_channel)
                                 data_response = data_stub.StoreBlock(pb2.StoreBlockRequest(
                                     block_id=block_id,
                                     data=block_data,
                                     username=username,
-                                    file_name=file_name  # Pasamos el nombre del archivo al DataNode
+                                    file_name=file_name,  # Pasamos el nombre del archivo al DataNode
+                                    replication_addrs=replication_data_node,  # Pasamos la dirección del DataNode de replicación
+                                    checksum=crc32c.crc32c(block_data)
                                 ))
                                 if not data_response.success:
                                     all_blocks_success = False
+                                    print(data_response.message)
                                     print(f"Error enviando el bloque {block_id} al DataNode {data_node_address}")
 
                         # Si todos los bloques fueron enviados exitosamente, actualizamos los metadatos

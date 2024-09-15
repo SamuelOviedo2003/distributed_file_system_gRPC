@@ -1,4 +1,5 @@
 from concurrent import futures
+import random
 import grpc
 import proto.dfs_pb2 as pb2
 import proto.dfs_pb2_grpc as pb2_grpc
@@ -16,10 +17,15 @@ class NameNode(pb2_grpc.DFSServicer):
     def GetDataNodesForFile(self, request, context):
         """Devuelve la lista de DataNodes para almacenar los bloques de un archivo."""
         data_nodes = []
+        replication_metadata=[]
         for _ in range(request.total_blocks):
             data_node_address = next(self.node_iterator)
             data_nodes.append(data_node_address)
-        return pb2.GetDataNodesResponse(success=True, data_nodes=data_nodes)
+            replication_data_node = random.choice(self.data_nodes)
+            while data_node_address == replication_data_node:
+                replication_data_node = random.choice(self.data_nodes)
+            replication_metadata.append(replication_data_node)
+        return pb2.GetDataNodesResponse(success=True, data_nodes=data_nodes, replication_metadata=replication_metadata)
 
     def RegisterFileMetadata(self, request, context):
         """Registra los metadatos del archivo y actualiza la estructura de directorios"""
@@ -36,6 +42,8 @@ class NameNode(pb2_grpc.DFSServicer):
                 "node": data_node_address,
                 "path": f"block_{block_id}"
             }
+
+        print(f"file metadata: {self.file_metadata}")
 
         # Agregamos el archivo a la estructura de directorios
         success, message = self.user_manager.add_file_to_directory(
