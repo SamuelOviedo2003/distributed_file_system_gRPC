@@ -40,10 +40,9 @@ class NameNode(pb2_grpc.DFSServicer):
         for block_id, data_node_address in enumerate(request.data_nodes):
             self.file_metadata[file_key]["blocks"][block_id] = {
                 "node": data_node_address,
+                "replication_node": request.replication_data_nodes[block_id],
                 "path": f"block_{block_id}"
             }
-
-        print(f"file metadata: {self.file_metadata}")
 
         # Agregamos el archivo a la estructura de directorios
         success, message = self.user_manager.add_file_to_directory(

@@ -108,7 +108,8 @@ def run():
                                 directory=current_directory,
                                 file_name=file_name,
                                 total_blocks=total_blocks,
-                                data_nodes=data_nodes
+                                data_nodes=data_nodes,
+                                replication_data_nodes=replication_data_nodes
                             ))
                             print(metadata_response.message)
 

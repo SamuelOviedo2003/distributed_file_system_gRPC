@@ -60,6 +60,7 @@ message RegisterFileMetadataRequest {
     string file_name = 3;
     int32 total_blocks = 4;
     repeated string data_nodes = 5;  // Lista de DataNodes donde se almacenaron los bloques
+    repeated string replication_data_nodes = 6;  // Lista de DataNodes donde se replicaron los bloques
 }
 
 message RegisterFileMetadataResponse {

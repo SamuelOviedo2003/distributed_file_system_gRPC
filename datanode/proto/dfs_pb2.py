@@ -24,7 +24,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\tdfs.proto\x12\x03\x64\x66s\"+\n\x13GetDataNodesRequest\x12\x14\n\x0ctotal_blocks\x18\x01 \x01(\x05\"Y\n\x14GetDataNodesResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x12\n\ndata_nodes\x18\x02 \x03(\t\x12\x1c\n\x14replication_metadata\x18\x03 \x03(\t\"L\n\x12GetFileInfoRequest\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x11\n\tdirectory\x18\x02 \x01(\t\x12\x11\n\tfile_name\x18\x03 \x01(\t\"m\n\x13GetFileInfoResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x14\n\x0ctotal_blocks\x18\x02 \x01(\x05\x12\x1e\n\x06\x62locks\x18\x03 \x03(\x0b\x32\x0e.dfs.BlockInfo\x12\x0f\n\x07message\x18\x04 \x01(\t\"\'\n\tBlockInfo\x12\x0c\n\x04node\x18\x01 \x01(\t\x12\x0c\n\x04path\x18\x02 \x01(\t\"K\n\x11RemoveFileRequest\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x11\n\tdirectory\x18\x02 \x01(\t\x12\x11\n\tfile_name\x18\x03 \x01(\t\"6\n\x12RemoveFileResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t\"\x7f\n\x1bRegisterFileMetadataRequest\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x11\n\tdirectory\x18\x02 \x01(\t\x12\x11\n\tfile_name\x18\x03 \x01(\t\x12\x14\n\x0ctotal_blocks\x18\x04 \x01(\x05\x12\x12\n\ndata_nodes\x18\x05 \x03(\t\"@\n\x1cRegisterFileMetadataResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t\"&\n\x10ReadBlockRequest\x12\x12\n\nblock_path\x18\x01 \x01(\t\"C\n\x11ReadBlockResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x0c\n\x04\x64\x61ta\x18\x02 \x01(\x0c\x12\x0f\n\x07message\x18\x03 \x01(\t\"\x85\x01\n\x11StoreBlockRequest\x12\x10\n\x08\x62lock_id\x18\x01 \x01(\x05\x12\x0c\n\x04\x64\x61ta\x18\x02 \x01(\x0c\x12\x10\n\x08username\x18\x03 \x01(\t\x12\x11\n\tfile_name\x18\x04 \x01(\t\x12\x19\n\x11replication_addrs\x18\x05 \x01(\t\x12\x10\n\x08\x63hecksum\x18\x06 \x01(\r\"6\n\x12StoreBlockResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t\">\n\x10\x43hangeDirRequest\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x18\n\x10target_directory\x18\x02 \x01(\t\"L\n\x11\x43hangeDirResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x15\n\rnew_directory\x18\x02 \x01(\t\x12\x0f\n\x07message\x18\x03 \x01(\t\"<\n\x10RemoveDirRequest\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x16\n\x0e\x64irectory_name\x18\x02 \x01(\t\"5\n\x11RemoveDirResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t\"2\n\x0cLoginRequest\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\"1\n\rLoginResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t\"7\n\x11\x43reateUserRequest\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\"6\n\x12\x43reateUserResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t\":\n\x0bListRequest\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x19\n\x11\x63urrent_directory\x18\x02 \x01(\t\"#\n\x0cListResponse\x12\x13\n\x0b\x64irectories\x18\x01 \x03(\t\":\n\x0eMakeDirRequest\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x16\n\x0e\x64irectory_name\x18\x02 \x01(\t\"3\n\x0fMakeDirResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t2\x96\x05\n\x03\x44\x46S\x12.\n\x05Login\x12\x11.dfs.LoginRequest\x1a\x12.dfs.LoginResponse\x12=\n\nCreateUser\x12\x16.dfs.CreateUserRequest\x1a\x17.dfs.CreateUserResponse\x12\x36\n\x0fListDirectories\x12\x10.dfs.ListRequest\x1a\x11.dfs.ListResponse\x12:\n\rMakeDirectory\x12\x13.dfs.MakeDirRequest\x1a\x14.dfs.MakeDirResponse\x12@\n\x0f\x43hangeDirectory\x12\x15.dfs.ChangeDirRequest\x1a\x16.dfs.ChangeDirResponse\x12@\n\x0fRemoveDirectory\x12\x15.dfs.RemoveDirRequest\x1a\x16.dfs.RemoveDirResponse\x12=\n\nRemoveFile\x12\x16.dfs.RemoveFileRequest\x1a\x17.dfs.RemoveFileResponse\x12@\n\x0bGetFileInfo\x12\x17.dfs.GetFileInfoRequest\x1a\x18.dfs.GetFileInfoResponse\x12J\n\x13GetDataNodesForFile\x12\x18.dfs.GetDataNodesRequest\x1a\x19.dfs.GetDataNodesResponse\x12[\n\x14RegisterFileMetadata\x12 .dfs.RegisterFileMetadataRequest\x1a!.dfs.RegisterFileMetadataResponse2\x85\x01\n\x08\x44\x61taNode\x12=\n\nStoreBlock\x12\x16.dfs.StoreBlockRequest\x1a\x17.dfs.StoreBlockResponse\x12:\n\tReadBlock\x12\x15.dfs.ReadBlockRequest\x1a\x16.dfs.ReadBlockResponseb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\tdfs.proto\x12\x03\x64\x66s\"+\n\x13GetDataNodesRequest\x12\x14\n\x0ctotal_blocks\x18\x01 \x01(\x05\"Y\n\x14GetDataNodesResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x12\n\ndata_nodes\x18\x02 \x03(\t\x12\x1c\n\x14replication_metadata\x18\x03 \x03(\t\"L\n\x12GetFileInfoRequest\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x11\n\tdirectory\x18\x02 \x01(\t\x12\x11\n\tfile_name\x18\x03 \x01(\t\"m\n\x13GetFileInfoResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x14\n\x0ctotal_blocks\x18\x02 \x01(\x05\x12\x1e\n\x06\x62locks\x18\x03 \x03(\x0b\x32\x0e.dfs.BlockInfo\x12\x0f\n\x07message\x18\x04 \x01(\t\"\'\n\tBlockInfo\x12\x0c\n\x04node\x18\x01 \x01(\t\x12\x0c\n\x04path\x18\x02 \x01(\t\"K\n\x11RemoveFileRequest\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x11\n\tdirectory\x18\x02 \x01(\t\x12\x11\n\tfile_name\x18\x03 \x01(\t\"6\n\x12RemoveFileResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t\"\x9f\x01\n\x1bRegisterFileMetadataRequest\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x11\n\tdirectory\x18\x02 \x01(\t\x12\x11\n\tfile_name\x18\x03 \x01(\t\x12\x14\n\x0ctotal_blocks\x18\x04 \x01(\x05\x12\x12\n\ndata_nodes\x18\x05 \x03(\t\x12\x1e\n\x16replication_data_nodes\x18\x06 \x03(\t\"@\n\x1cRegisterFileMetadataResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t\"&\n\x10ReadBlockRequest\x12\x12\n\nblock_path\x18\x01 \x01(\t\"C\n\x11ReadBlockResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x0c\n\x04\x64\x61ta\x18\x02 \x01(\x0c\x12\x0f\n\x07message\x18\x03 \x01(\t\"\x85\x01\n\x11StoreBlockRequest\x12\x10\n\x08\x62lock_id\x18\x01 \x01(\x05\x12\x0c\n\x04\x64\x61ta\x18\x02 \x01(\x0c\x12\x10\n\x08username\x18\x03 \x01(\t\x12\x11\n\tfile_name\x18\x04 \x01(\t\x12\x19\n\x11replication_addrs\x18\x05 \x01(\t\x12\x10\n\x08\x63hecksum\x18\x06 \x01(\r\"6\n\x12StoreBlockResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t\">\n\x10\x43hangeDirRequest\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x18\n\x10target_directory\x18\x02 \x01(\t\"L\n\x11\x43hangeDirResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x15\n\rnew_directory\x18\x02 \x01(\t\x12\x0f\n\x07message\x18\x03 \x01(\t\"<\n\x10RemoveDirRequest\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x16\n\x0e\x64irectory_name\x18\x02 \x01(\t\"5\n\x11RemoveDirResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t\"2\n\x0cLoginRequest\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\"1\n\rLoginResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t\"7\n\x11\x43reateUserRequest\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\"6\n\x12\x43reateUserResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t\":\n\x0bListRequest\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x19\n\x11\x63urrent_directory\x18\x02 \x01(\t\"#\n\x0cListResponse\x12\x13\n\x0b\x64irectories\x18\x01 \x03(\t\":\n\x0eMakeDirRequest\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x16\n\x0e\x64irectory_name\x18\x02 \x01(\t\"3\n\x0fMakeDirResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t2\x96\x05\n\x03\x44\x46S\x12.\n\x05Login\x12\x11.dfs.LoginRequest\x1a\x12.dfs.LoginResponse\x12=\n\nCreateUser\x12\x16.dfs.CreateUserRequest\x1a\x17.dfs.CreateUserResponse\x12\x36\n\x0fListDirectories\x12\x10.dfs.ListRequest\x1a\x11.dfs.ListResponse\x12:\n\rMakeDirectory\x12\x13.dfs.MakeDirRequest\x1a\x14.dfs.MakeDirResponse\x12@\n\x0f\x43hangeDirectory\x12\x15.dfs.ChangeDirRequest\x1a\x16.dfs.ChangeDirResponse\x12@\n\x0fRemoveDirectory\x12\x15.dfs.RemoveDirRequest\x1a\x16.dfs.RemoveDirResponse\x12=\n\nRemoveFile\x12\x16.dfs.RemoveFileRequest\x1a\x17.dfs.RemoveFileResponse\x12@\n\x0bGetFileInfo\x12\x17.dfs.GetFileInfoRequest\x1a\x18.dfs.GetFileInfoResponse\x12J\n\x13GetDataNodesForFile\x12\x18.dfs.GetDataNodesRequest\x1a\x19.dfs.GetDataNodesResponse\x12[\n\x14RegisterFileMetadata\x12 .dfs.RegisterFileMetadataRequest\x1a!.dfs.RegisterFileMetadataResponse2\x85\x01\n\x08\x44\x61taNode\x12=\n\nStoreBlock\x12\x16.dfs.StoreBlockRequest\x1a\x17.dfs.StoreBlockResponse\x12:\n\tReadBlock\x12\x15.dfs.ReadBlockRequest\x1a\x16.dfs.ReadBlockResponseb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -45,44 +45,44 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['_REMOVEFILEREQUEST']._serialized_end=459
   _globals['_REMOVEFILERESPONSE']._serialized_start=461
   _globals['_REMOVEFILERESPONSE']._serialized_end=515
-  _globals['_REGISTERFILEMETADATAREQUEST']._serialized_start=517
-  _globals['_REGISTERFILEMETADATAREQUEST']._serialized_end=644
-  _globals['_REGISTERFILEMETADATARESPONSE']._serialized_start=646
-  _globals['_REGISTERFILEMETADATARESPONSE']._serialized_end=710
-  _globals['_READBLOCKREQUEST']._serialized_start=712
-  _globals['_READBLOCKREQUEST']._serialized_end=750
-  _globals['_READBLOCKRESPONSE']._serialized_start=752
-  _globals['_READBLOCKRESPONSE']._serialized_end=819
-  _globals['_STOREBLOCKREQUEST']._serialized_start=822
-  _globals['_STOREBLOCKREQUEST']._serialized_end=955
-  _globals['_STOREBLOCKRESPONSE']._serialized_start=957
-  _globals['_STOREBLOCKRESPONSE']._serialized_end=1011
-  _globals['_CHANGEDIRREQUEST']._serialized_start=1013
-  _globals['_CHANGEDIRREQUEST']._serialized_end=1075
-  _globals['_CHANGEDIRRESPONSE']._serialized_start=1077
-  _globals['_CHANGEDIRRESPONSE']._serialized_end=1153
-  _globals['_REMOVEDIRREQUEST']._serialized_start=1155
-  _globals['_REMOVEDIRREQUEST']._serialized_end=1215
-  _globals['_REMOVEDIRRESPONSE']._serialized_start=1217
-  _globals['_REMOVEDIRRESPONSE']._serialized_end=1270
-  _globals['_LOGINREQUEST']._serialized_start=1272
-  _globals['_LOGINREQUEST']._serialized_end=1322
-  _globals['_LOGINRESPONSE']._serialized_start=1324
-  _globals['_LOGINRESPONSE']._serialized_end=1373
-  _globals['_CREATEUSERREQUEST']._serialized_start=1375
-  _globals['_CREATEUSERREQUEST']._serialized_end=1430
-  _globals['_CREATEUSERRESPONSE']._serialized_start=1432
-  _globals['_CREATEUSERRESPONSE']._serialized_end=1486
-  _globals['_LISTREQUEST']._serialized_start=1488
-  _globals['_LISTREQUEST']._serialized_end=1546
-  _globals['_LISTRESPONSE']._serialized_start=1548
-  _globals['_LISTRESPONSE']._serialized_end=1583
-  _globals['_MAKEDIRREQUEST']._serialized_start=1585
-  _globals['_MAKEDIRREQUEST']._serialized_end=1643
-  _globals['_MAKEDIRRESPONSE']._serialized_start=1645
-  _globals['_MAKEDIRRESPONSE']._serialized_end=1696
-  _globals['_DFS']._serialized_start=1699
-  _globals['_DFS']._serialized_end=2361
-  _globals['_DATANODE']._serialized_start=2364
-  _globals['_DATANODE']._serialized_end=2497
+  _globals['_REGISTERFILEMETADATAREQUEST']._serialized_start=518
+  _globals['_REGISTERFILEMETADATAREQUEST']._serialized_end=677
+  _globals['_REGISTERFILEMETADATARESPONSE']._serialized_start=679
+  _globals['_REGISTERFILEMETADATARESPONSE']._serialized_end=743
+  _globals['_READBLOCKREQUEST']._serialized_start=745
+  _globals['_READBLOCKREQUEST']._serialized_end=783
+  _globals['_READBLOCKRESPONSE']._serialized_start=785
+  _globals['_READBLOCKRESPONSE']._serialized_end=852
+  _globals['_STOREBLOCKREQUEST']._serialized_start=855
+  _globals['_STOREBLOCKREQUEST']._serialized_end=988
+  _globals['_STOREBLOCKRESPONSE']._serialized_start=990
+  _globals['_STOREBLOCKRESPONSE']._serialized_end=1044
+  _globals['_CHANGEDIRREQUEST']._serialized_start=1046
+  _globals['_CHANGEDIRREQUEST']._serialized_end=1108
+  _globals['_CHANGEDIRRESPONSE']._serialized_start=1110
+  _globals['_CHANGEDIRRESPONSE']._serialized_end=1186
+  _globals['_REMOVEDIRREQUEST']._serialized_start=1188
+  _globals['_REMOVEDIRREQUEST']._serialized_end=1248
+  _globals['_REMOVEDIRRESPONSE']._serialized_start=1250
+  _globals['_REMOVEDIRRESPONSE']._serialized_end=1303
+  _globals['_LOGINREQUEST']._serialized_start=1305
+  _globals['_LOGINREQUEST']._serialized_end=1355
+  _globals['_LOGINRESPONSE']._serialized_start=1357
+  _globals['_LOGINRESPONSE']._serialized_end=1406
+  _globals['_CREATEUSERREQUEST']._serialized_start=1408
+  _globals['_CREATEUSERREQUEST']._serialized_end=1463
+  _globals['_CREATEUSERRESPONSE']._serialized_start=1465
+  _globals['_CREATEUSERRESPONSE']._serialized_end=1519
+  _globals['_LISTREQUEST']._serialized_start=1521
+  _globals['_LISTREQUEST']._serialized_end=1579
+  _globals['_LISTRESPONSE']._serialized_start=1581
+  _globals['_LISTRESPONSE']._serialized_end=1616
+  _globals['_MAKEDIRREQUEST']._serialized_start=1618
+  _globals['_MAKEDIRREQUEST']._serialized_end=1676
+  _globals['_MAKEDIRRESPONSE']._serialized_start=1678
+  _globals['_MAKEDIRRESPONSE']._serialized_end=1729
+  _globals['_DFS']._serialized_start=1732
+  _globals['_DFS']._serialized_end=2394
+  _globals['_DATANODE']._serialized_start=2397
+  _globals['_DATANODE']._serialized_end=2530
 # @@protoc_insertion_point(module_scope)
