@@ -5,6 +5,9 @@ import proto.dfs_pb2_grpc as pb2_grpc
 import os
 import argparse
 import crc32c
+import logging
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 class DataNode(pb2_grpc.DataNodeServicer):
     def __init__(self, storage_dir):
@@ -19,6 +22,7 @@ class DataNode(pb2_grpc.DataNodeServicer):
         if checksum_data_node != request.checksum:
             return pb2.StoreBlockResponse(success=False, message="Checksums do not match. Failed Process.")
         block_path = os.path.join(self.storage_dir, f"{request.username}_{request.file_name}_block_{request.block_id}")
+        logging.info(f"Saving {request.username}_{request.file_name}_block_{request.block_id}")
         with open(block_path, 'wb') as block_file:
             block_file.write(request.data)
         if request.replication_addrs == "": # Si no hay DataNode de replicación, se almacena el bloque en el DataNode actual
@@ -33,12 +37,14 @@ class DataNode(pb2_grpc.DataNodeServicer):
                 replication_addrs="", # Pasamos la dirección del DataNode de replicación
                 checksum=checksum_data_node
             ))
+            logging.info(f"Replicating {request.username}_{request.file_name}_block_{request.block_id} to {request.replication_addrs}")
             success=data_response.success
         return pb2.StoreBlockResponse(success=success, message=data_response.message)
 
     def ReadBlock(self, request, context):
         """Lee un bloque almacenado y lo devuelve al cliente"""
         block_path = os.path.join(self.storage_dir, request.block_path)
+        logging.info(f"Reading {request.block_path}")
         if os.path.exists(block_path):
             with open(block_path, 'rb') as block_file:
                 data = block_file.read()
@@ -49,7 +55,7 @@ def serve(port):
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     pb2_grpc.add_DataNodeServicer_to_server(DataNode(f"data_storage_{port}"), server)
     server.add_insecure_port(f'[::]:{port}')  # El puerto es recibido como parámetro
-    print(f"DataNode is listening on port {port}")
+    logging.info(f"DataNode is listening on port {port}")
     server.start()
     server.wait_for_termination()
 

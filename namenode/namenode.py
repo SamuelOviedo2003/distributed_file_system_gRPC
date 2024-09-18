@@ -5,11 +5,15 @@ import proto.dfs_pb2 as pb2
 import proto.dfs_pb2_grpc as pb2_grpc
 from users import UserManager
 from itertools import cycle
+import logging
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 class NameNode(pb2_grpc.DFSServicer):
     def __init__(self):
         # Inicializamos el UserManager y el ciclo secuencial de DataNodes
         self.data_nodes = ["localhost:50052", "localhost:50053"]
+        logging.info("Initializing NameNode with data nodes: %s", self.data_nodes)
         self.node_iterator = cycle(self.data_nodes)
         self.user_manager = UserManager()
         self.file_metadata = {}
@@ -25,6 +29,8 @@ class NameNode(pb2_grpc.DFSServicer):
             while data_node_address == replication_data_node:
                 replication_data_node = random.choice(self.data_nodes)
             replication_metadata.append(replication_data_node)
+        logging.info("DataNodes for file: %s", data_nodes)
+        logging.info("Replication DataNodes for file: %s", replication_metadata)
         return pb2.GetDataNodesResponse(success=True, data_nodes=data_nodes, replication_metadata=replication_metadata)
 
     def RegisterFileMetadata(self, request, context):
@@ -50,6 +56,7 @@ class NameNode(pb2_grpc.DFSServicer):
             request.directory,
             request.file_name
         )
+        logging.info("File metadata registered: %s", self.file_metadata)
         return pb2.RegisterFileMetadataResponse(success=success, message=message)
         
     def GetFileInfo(self, request, context):
