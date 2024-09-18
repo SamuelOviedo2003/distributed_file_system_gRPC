@@ -13,5 +13,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy all the content from the namenode folder into the container’s working directory ()
 COPY . .
 
+EXPOSE 50051
+
+
 # Specify the command to run the namenode.py file
 CMD ["python", "namenode.py"]

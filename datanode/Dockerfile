@@ -13,5 +13,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy all the content from the datanode folder into the container’s working directory ()
 COPY . .
 
+EXPOSE 50052
+
 # Specify the command to run the datanode.py file
 CMD ["python", "datanode.py", "--port", "50052"]
