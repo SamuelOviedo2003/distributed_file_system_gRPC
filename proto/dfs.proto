@@ -13,6 +13,7 @@ service DFS {
     rpc GetFileInfo(GetFileInfoRequest) returns (GetFileInfoResponse);
     rpc GetDataNodesForFile(GetDataNodesRequest) returns (GetDataNodesResponse);
     rpc RegisterFileMetadata(RegisterFileMetadataRequest) returns (RegisterFileMetadataResponse);
+    rpc Heartbeat(HeartbeatRequest) returns (HeartbeatResponse);
 }
 
 message GetDataNodesRequest {
@@ -157,3 +158,11 @@ message MakeDirResponse {
     string message = 2;
 }
 
+
+message HeartbeatRequest {
+    string data_node_address = 1;
+}
+
+message HeartbeatResponse {
+    bool success = 1;
+}
