@@ -103,6 +103,7 @@ class NameNode(pb2_grpc.DFSServicer):
         
         if replication_successful:
             logging.info(f"DataNode {failed_node} ha sido replicado completamente. Eliminando de la lista de monitoreo.")
+            logging.info("File metadata registered: %s", self.file_metadata)
             self.failed_data_nodes.add(failed_node)  # Marcar el DataNode como replicado y caído, para dejar de monitorearlo
 
     def find_available_datanode(self, exclude_nodes):
