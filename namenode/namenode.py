@@ -49,16 +49,20 @@ class NameNode(pb2_grpc.DFSServicer):
         return pb2.HeartbeatResponse(success=True)
 
     def monitor_data_nodes(self):
-        """Monitorea los DataNodes para detectar fallos."""
+        """Monitorea los DataNodes para detectar fallos o que están esperando conexión."""
         while not stop_event.is_set():  # Detener el hilo si se activa el evento stop_event
             current_time = time.time()
             for data_node, last_heartbeat in self.data_nodes_last_heartbeat.items():
-                if data_node not in self.failed_data_nodes:  # Verificar solo nodos no marcados como fallidos
-                    if current_time - last_heartbeat > 20:  # Si han pasado más de 20 segundos sin recibir heartbeat
-                        logging.warning(f"DataNode {data_node} no responde (caído)!")
-                        self.data_nodes_status[data_node] = False
-                        # Iniciar proceso de replicación para archivos del DataNode caído
-                        self.handle_datanode_failure(data_node)
+                if self.data_nodes_status[data_node]:  # El DataNode ya está conectado
+                    if data_node not in self.failed_data_nodes:  # Verificar solo nodos no marcados como fallidos
+                        if current_time - last_heartbeat > 20:  # Si han pasado más de 20 segundos sin recibir heartbeat
+                            logging.warning(f"DataNode {data_node} no responde (caído)!")
+                            self.data_nodes_status[data_node] = False
+                            # Iniciar proceso de replicación para archivos del DataNode caído
+                            self.handle_datanode_failure(data_node)
+                else:
+                    # Mostrar mensaje indicando que se está esperando la conexión del DataNode
+                    logging.info(f"Esperando la conexión del DataNode {data_node}...")
             time.sleep(5)
 
     def handle_datanode_failure(self, failed_node):
