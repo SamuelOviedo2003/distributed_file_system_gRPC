@@ -3,13 +3,10 @@
 import grpc
 import warnings
 
-from . import dfs_pb2 as dfs__pb2
+from proto import dfs_pb2 as proto_dot_dfs__pb2
 
-
-GRPC_GENERATED_VERSION = '1.65.5'
+GRPC_GENERATED_VERSION = '1.66.1'
 GRPC_VERSION = grpc.__version__
-EXPECTED_ERROR_RELEASE = '1.66.0'
-SCHEDULED_RELEASE_DATE = 'August 6, 2024'
 _version_not_supported = False
 
 try:
@@ -19,15 +16,12 @@ except ImportError:
     _version_not_supported = True
 
 if _version_not_supported:
-    warnings.warn(
+    raise RuntimeError(
         f'The grpc package installed is at version {GRPC_VERSION},'
-        + f' but the generated code in dfs_pb2_grpc.py depends on'
+        + f' but the generated code in proto/dfs_pb2_grpc.py depends on'
         + f' grpcio>={GRPC_GENERATED_VERSION}.'
         + f' Please upgrade your grpc module to grpcio>={GRPC_GENERATED_VERSION}'
         + f' or downgrade your generated code using grpcio-tools<={GRPC_VERSION}.'
-        + f' This warning will become an error in {EXPECTED_ERROR_RELEASE},'
-        + f' scheduled for release on {SCHEDULED_RELEASE_DATE}.',
-        RuntimeWarning
     )
 
 
@@ -42,58 +36,63 @@ class DFSStub(object):
         """
         self.Login = channel.unary_unary(
                 '/dfs.DFS/Login',
-                request_serializer=dfs__pb2.LoginRequest.SerializeToString,
-                response_deserializer=dfs__pb2.LoginResponse.FromString,
+                request_serializer=proto_dot_dfs__pb2.LoginRequest.SerializeToString,
+                response_deserializer=proto_dot_dfs__pb2.LoginResponse.FromString,
                 _registered_method=True)
         self.CreateUser = channel.unary_unary(
                 '/dfs.DFS/CreateUser',
-                request_serializer=dfs__pb2.CreateUserRequest.SerializeToString,
-                response_deserializer=dfs__pb2.CreateUserResponse.FromString,
+                request_serializer=proto_dot_dfs__pb2.CreateUserRequest.SerializeToString,
+                response_deserializer=proto_dot_dfs__pb2.CreateUserResponse.FromString,
                 _registered_method=True)
         self.ListDirectories = channel.unary_unary(
                 '/dfs.DFS/ListDirectories',
-                request_serializer=dfs__pb2.ListRequest.SerializeToString,
-                response_deserializer=dfs__pb2.ListResponse.FromString,
+                request_serializer=proto_dot_dfs__pb2.ListRequest.SerializeToString,
+                response_deserializer=proto_dot_dfs__pb2.ListResponse.FromString,
                 _registered_method=True)
         self.MakeDirectory = channel.unary_unary(
                 '/dfs.DFS/MakeDirectory',
-                request_serializer=dfs__pb2.MakeDirRequest.SerializeToString,
-                response_deserializer=dfs__pb2.MakeDirResponse.FromString,
+                request_serializer=proto_dot_dfs__pb2.MakeDirRequest.SerializeToString,
+                response_deserializer=proto_dot_dfs__pb2.MakeDirResponse.FromString,
                 _registered_method=True)
         self.ChangeDirectory = channel.unary_unary(
                 '/dfs.DFS/ChangeDirectory',
-                request_serializer=dfs__pb2.ChangeDirRequest.SerializeToString,
-                response_deserializer=dfs__pb2.ChangeDirResponse.FromString,
+                request_serializer=proto_dot_dfs__pb2.ChangeDirRequest.SerializeToString,
+                response_deserializer=proto_dot_dfs__pb2.ChangeDirResponse.FromString,
                 _registered_method=True)
         self.RemoveDirectory = channel.unary_unary(
                 '/dfs.DFS/RemoveDirectory',
-                request_serializer=dfs__pb2.RemoveDirRequest.SerializeToString,
-                response_deserializer=dfs__pb2.RemoveDirResponse.FromString,
+                request_serializer=proto_dot_dfs__pb2.RemoveDirRequest.SerializeToString,
+                response_deserializer=proto_dot_dfs__pb2.RemoveDirResponse.FromString,
                 _registered_method=True)
         self.RemoveFile = channel.unary_unary(
                 '/dfs.DFS/RemoveFile',
-                request_serializer=dfs__pb2.RemoveFileRequest.SerializeToString,
-                response_deserializer=dfs__pb2.RemoveFileResponse.FromString,
+                request_serializer=proto_dot_dfs__pb2.RemoveFileRequest.SerializeToString,
+                response_deserializer=proto_dot_dfs__pb2.RemoveFileResponse.FromString,
                 _registered_method=True)
         self.GetFileInfo = channel.unary_unary(
                 '/dfs.DFS/GetFileInfo',
-                request_serializer=dfs__pb2.GetFileInfoRequest.SerializeToString,
-                response_deserializer=dfs__pb2.GetFileInfoResponse.FromString,
+                request_serializer=proto_dot_dfs__pb2.GetFileInfoRequest.SerializeToString,
+                response_deserializer=proto_dot_dfs__pb2.GetFileInfoResponse.FromString,
                 _registered_method=True)
         self.GetDataNodesForFile = channel.unary_unary(
                 '/dfs.DFS/GetDataNodesForFile',
-                request_serializer=dfs__pb2.GetDataNodesRequest.SerializeToString,
-                response_deserializer=dfs__pb2.GetDataNodesResponse.FromString,
+                request_serializer=proto_dot_dfs__pb2.GetDataNodesRequest.SerializeToString,
+                response_deserializer=proto_dot_dfs__pb2.GetDataNodesResponse.FromString,
                 _registered_method=True)
         self.RegisterFileMetadata = channel.unary_unary(
                 '/dfs.DFS/RegisterFileMetadata',
-                request_serializer=dfs__pb2.RegisterFileMetadataRequest.SerializeToString,
-                response_deserializer=dfs__pb2.RegisterFileMetadataResponse.FromString,
+                request_serializer=proto_dot_dfs__pb2.RegisterFileMetadataRequest.SerializeToString,
+                response_deserializer=proto_dot_dfs__pb2.RegisterFileMetadataResponse.FromString,
                 _registered_method=True)
         self.Heartbeat = channel.unary_unary(
                 '/dfs.DFS/Heartbeat',
-                request_serializer=dfs__pb2.HeartbeatRequest.SerializeToString,
-                response_deserializer=dfs__pb2.HeartbeatResponse.FromString,
+                request_serializer=proto_dot_dfs__pb2.HeartbeatRequest.SerializeToString,
+                response_deserializer=proto_dot_dfs__pb2.HeartbeatResponse.FromString,
+                _registered_method=True)
+        self.RegisterDataNode = channel.unary_unary(
+                '/dfs.DFS/RegisterDataNode',
+                request_serializer=proto_dot_dfs__pb2.RegisterDataNodeRequest.SerializeToString,
+                response_deserializer=proto_dot_dfs__pb2.RegisterDataNodeResponse.FromString,
                 _registered_method=True)
 
 
@@ -166,63 +165,74 @@ class DFSServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def RegisterDataNode(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_DFSServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'Login': grpc.unary_unary_rpc_method_handler(
                     servicer.Login,
-                    request_deserializer=dfs__pb2.LoginRequest.FromString,
-                    response_serializer=dfs__pb2.LoginResponse.SerializeToString,
+                    request_deserializer=proto_dot_dfs__pb2.LoginRequest.FromString,
+                    response_serializer=proto_dot_dfs__pb2.LoginResponse.SerializeToString,
             ),
             'CreateUser': grpc.unary_unary_rpc_method_handler(
                     servicer.CreateUser,
-                    request_deserializer=dfs__pb2.CreateUserRequest.FromString,
-                    response_serializer=dfs__pb2.CreateUserResponse.SerializeToString,
+                    request_deserializer=proto_dot_dfs__pb2.CreateUserRequest.FromString,
+                    response_serializer=proto_dot_dfs__pb2.CreateUserResponse.SerializeToString,
             ),
             'ListDirectories': grpc.unary_unary_rpc_method_handler(
                     servicer.ListDirectories,
-                    request_deserializer=dfs__pb2.ListRequest.FromString,
-                    response_serializer=dfs__pb2.ListResponse.SerializeToString,
+                    request_deserializer=proto_dot_dfs__pb2.ListRequest.FromString,
+                    response_serializer=proto_dot_dfs__pb2.ListResponse.SerializeToString,
             ),
             'MakeDirectory': grpc.unary_unary_rpc_method_handler(
                     servicer.MakeDirectory,
-                    request_deserializer=dfs__pb2.MakeDirRequest.FromString,
-                    response_serializer=dfs__pb2.MakeDirResponse.SerializeToString,
+                    request_deserializer=proto_dot_dfs__pb2.MakeDirRequest.FromString,
+                    response_serializer=proto_dot_dfs__pb2.MakeDirResponse.SerializeToString,
             ),
             'ChangeDirectory': grpc.unary_unary_rpc_method_handler(
                     servicer.ChangeDirectory,
-                    request_deserializer=dfs__pb2.ChangeDirRequest.FromString,
-                    response_serializer=dfs__pb2.ChangeDirResponse.SerializeToString,
+                    request_deserializer=proto_dot_dfs__pb2.ChangeDirRequest.FromString,
+                    response_serializer=proto_dot_dfs__pb2.ChangeDirResponse.SerializeToString,
             ),
             'RemoveDirectory': grpc.unary_unary_rpc_method_handler(
                     servicer.RemoveDirectory,
-                    request_deserializer=dfs__pb2.RemoveDirRequest.FromString,
-                    response_serializer=dfs__pb2.RemoveDirResponse.SerializeToString,
+                    request_deserializer=proto_dot_dfs__pb2.RemoveDirRequest.FromString,
+                    response_serializer=proto_dot_dfs__pb2.RemoveDirResponse.SerializeToString,
             ),
             'RemoveFile': grpc.unary_unary_rpc_method_handler(
                     servicer.RemoveFile,
-                    request_deserializer=dfs__pb2.RemoveFileRequest.FromString,
-                    response_serializer=dfs__pb2.RemoveFileResponse.SerializeToString,
+                    request_deserializer=proto_dot_dfs__pb2.RemoveFileRequest.FromString,
+                    response_serializer=proto_dot_dfs__pb2.RemoveFileResponse.SerializeToString,
             ),
             'GetFileInfo': grpc.unary_unary_rpc_method_handler(
                     servicer.GetFileInfo,
-                    request_deserializer=dfs__pb2.GetFileInfoRequest.FromString,
-                    response_serializer=dfs__pb2.GetFileInfoResponse.SerializeToString,
+                    request_deserializer=proto_dot_dfs__pb2.GetFileInfoRequest.FromString,
+                    response_serializer=proto_dot_dfs__pb2.GetFileInfoResponse.SerializeToString,
             ),
             'GetDataNodesForFile': grpc.unary_unary_rpc_method_handler(
                     servicer.GetDataNodesForFile,
-                    request_deserializer=dfs__pb2.GetDataNodesRequest.FromString,
-                    response_serializer=dfs__pb2.GetDataNodesResponse.SerializeToString,
+                    request_deserializer=proto_dot_dfs__pb2.GetDataNodesRequest.FromString,
+                    response_serializer=proto_dot_dfs__pb2.GetDataNodesResponse.SerializeToString,
             ),
             'RegisterFileMetadata': grpc.unary_unary_rpc_method_handler(
                     servicer.RegisterFileMetadata,
-                    request_deserializer=dfs__pb2.RegisterFileMetadataRequest.FromString,
-                    response_serializer=dfs__pb2.RegisterFileMetadataResponse.SerializeToString,
+                    request_deserializer=proto_dot_dfs__pb2.RegisterFileMetadataRequest.FromString,
+                    response_serializer=proto_dot_dfs__pb2.RegisterFileMetadataResponse.SerializeToString,
             ),
             'Heartbeat': grpc.unary_unary_rpc_method_handler(
                     servicer.Heartbeat,
-                    request_deserializer=dfs__pb2.HeartbeatRequest.FromString,
-                    response_serializer=dfs__pb2.HeartbeatResponse.SerializeToString,
+                    request_deserializer=proto_dot_dfs__pb2.HeartbeatRequest.FromString,
+                    response_serializer=proto_dot_dfs__pb2.HeartbeatResponse.SerializeToString,
+            ),
+            'RegisterDataNode': grpc.unary_unary_rpc_method_handler(
+                    servicer.RegisterDataNode,
+                    request_deserializer=proto_dot_dfs__pb2.RegisterDataNodeRequest.FromString,
+                    response_serializer=proto_dot_dfs__pb2.RegisterDataNodeResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -250,8 +260,8 @@ class DFS(object):
             request,
             target,
             '/dfs.DFS/Login',
-            dfs__pb2.LoginRequest.SerializeToString,
-            dfs__pb2.LoginResponse.FromString,
+            proto_dot_dfs__pb2.LoginRequest.SerializeToString,
+            proto_dot_dfs__pb2.LoginResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -277,8 +287,8 @@ class DFS(object):
             request,
             target,
             '/dfs.DFS/CreateUser',
-            dfs__pb2.CreateUserRequest.SerializeToString,
-            dfs__pb2.CreateUserResponse.FromString,
+            proto_dot_dfs__pb2.CreateUserRequest.SerializeToString,
+            proto_dot_dfs__pb2.CreateUserResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -304,8 +314,8 @@ class DFS(object):
             request,
             target,
             '/dfs.DFS/ListDirectories',
-            dfs__pb2.ListRequest.SerializeToString,
-            dfs__pb2.ListResponse.FromString,
+            proto_dot_dfs__pb2.ListRequest.SerializeToString,
+            proto_dot_dfs__pb2.ListResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -331,8 +341,8 @@ class DFS(object):
             request,
             target,
             '/dfs.DFS/MakeDirectory',
-            dfs__pb2.MakeDirRequest.SerializeToString,
-            dfs__pb2.MakeDirResponse.FromString,
+            proto_dot_dfs__pb2.MakeDirRequest.SerializeToString,
+            proto_dot_dfs__pb2.MakeDirResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -358,8 +368,8 @@ class DFS(object):
             request,
             target,
             '/dfs.DFS/ChangeDirectory',
-            dfs__pb2.ChangeDirRequest.SerializeToString,
-            dfs__pb2.ChangeDirResponse.FromString,
+            proto_dot_dfs__pb2.ChangeDirRequest.SerializeToString,
+            proto_dot_dfs__pb2.ChangeDirResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -385,8 +395,8 @@ class DFS(object):
             request,
             target,
             '/dfs.DFS/RemoveDirectory',
-            dfs__pb2.RemoveDirRequest.SerializeToString,
-            dfs__pb2.RemoveDirResponse.FromString,
+            proto_dot_dfs__pb2.RemoveDirRequest.SerializeToString,
+            proto_dot_dfs__pb2.RemoveDirResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -412,8 +422,8 @@ class DFS(object):
             request,
             target,
             '/dfs.DFS/RemoveFile',
-            dfs__pb2.RemoveFileRequest.SerializeToString,
-            dfs__pb2.RemoveFileResponse.FromString,
+            proto_dot_dfs__pb2.RemoveFileRequest.SerializeToString,
+            proto_dot_dfs__pb2.RemoveFileResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -439,8 +449,8 @@ class DFS(object):
             request,
             target,
             '/dfs.DFS/GetFileInfo',
-            dfs__pb2.GetFileInfoRequest.SerializeToString,
-            dfs__pb2.GetFileInfoResponse.FromString,
+            proto_dot_dfs__pb2.GetFileInfoRequest.SerializeToString,
+            proto_dot_dfs__pb2.GetFileInfoResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -466,8 +476,8 @@ class DFS(object):
             request,
             target,
             '/dfs.DFS/GetDataNodesForFile',
-            dfs__pb2.GetDataNodesRequest.SerializeToString,
-            dfs__pb2.GetDataNodesResponse.FromString,
+            proto_dot_dfs__pb2.GetDataNodesRequest.SerializeToString,
+            proto_dot_dfs__pb2.GetDataNodesResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -493,8 +503,8 @@ class DFS(object):
             request,
             target,
             '/dfs.DFS/RegisterFileMetadata',
-            dfs__pb2.RegisterFileMetadataRequest.SerializeToString,
-            dfs__pb2.RegisterFileMetadataResponse.FromString,
+            proto_dot_dfs__pb2.RegisterFileMetadataRequest.SerializeToString,
+            proto_dot_dfs__pb2.RegisterFileMetadataResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -520,8 +530,35 @@ class DFS(object):
             request,
             target,
             '/dfs.DFS/Heartbeat',
-            dfs__pb2.HeartbeatRequest.SerializeToString,
-            dfs__pb2.HeartbeatResponse.FromString,
+            proto_dot_dfs__pb2.HeartbeatRequest.SerializeToString,
+            proto_dot_dfs__pb2.HeartbeatResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def RegisterDataNode(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/dfs.DFS/RegisterDataNode',
+            proto_dot_dfs__pb2.RegisterDataNodeRequest.SerializeToString,
+            proto_dot_dfs__pb2.RegisterDataNodeResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -544,13 +581,13 @@ class DataNodeStub(object):
         """
         self.StoreBlock = channel.unary_unary(
                 '/dfs.DataNode/StoreBlock',
-                request_serializer=dfs__pb2.StoreBlockRequest.SerializeToString,
-                response_deserializer=dfs__pb2.StoreBlockResponse.FromString,
+                request_serializer=proto_dot_dfs__pb2.StoreBlockRequest.SerializeToString,
+                response_deserializer=proto_dot_dfs__pb2.StoreBlockResponse.FromString,
                 _registered_method=True)
         self.ReadBlock = channel.unary_unary(
                 '/dfs.DataNode/ReadBlock',
-                request_serializer=dfs__pb2.ReadBlockRequest.SerializeToString,
-                response_deserializer=dfs__pb2.ReadBlockResponse.FromString,
+                request_serializer=proto_dot_dfs__pb2.ReadBlockRequest.SerializeToString,
+                response_deserializer=proto_dot_dfs__pb2.ReadBlockResponse.FromString,
                 _registered_method=True)
 
 
@@ -574,13 +611,13 @@ def add_DataNodeServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'StoreBlock': grpc.unary_unary_rpc_method_handler(
                     servicer.StoreBlock,
-                    request_deserializer=dfs__pb2.StoreBlockRequest.FromString,
-                    response_serializer=dfs__pb2.StoreBlockResponse.SerializeToString,
+                    request_deserializer=proto_dot_dfs__pb2.StoreBlockRequest.FromString,
+                    response_serializer=proto_dot_dfs__pb2.StoreBlockResponse.SerializeToString,
             ),
             'ReadBlock': grpc.unary_unary_rpc_method_handler(
                     servicer.ReadBlock,
-                    request_deserializer=dfs__pb2.ReadBlockRequest.FromString,
-                    response_serializer=dfs__pb2.ReadBlockResponse.SerializeToString,
+                    request_deserializer=proto_dot_dfs__pb2.ReadBlockRequest.FromString,
+                    response_serializer=proto_dot_dfs__pb2.ReadBlockResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -608,8 +645,8 @@ class DataNode(object):
             request,
             target,
             '/dfs.DataNode/StoreBlock',
-            dfs__pb2.StoreBlockRequest.SerializeToString,
-            dfs__pb2.StoreBlockResponse.FromString,
+            proto_dot_dfs__pb2.StoreBlockRequest.SerializeToString,
+            proto_dot_dfs__pb2.StoreBlockResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -635,8 +672,8 @@ class DataNode(object):
             request,
             target,
             '/dfs.DataNode/ReadBlock',
-            dfs__pb2.ReadBlockRequest.SerializeToString,
-            dfs__pb2.ReadBlockResponse.FromString,
+            proto_dot_dfs__pb2.ReadBlockRequest.SerializeToString,
+            proto_dot_dfs__pb2.ReadBlockResponse.FromString,
             options,
             channel_credentials,
             insecure,

@@ -47,7 +47,20 @@ class DataNode(pb2_grpc.DataNodeServicer):
                         logging.info(f"Heartbeat sent for DataNode {self.storage_dir}")
             except Exception as e:
                 logging.error(f"Error sending heartbeat: {e}")
-            time.sleep(10)  # Cada 5 segundos enviar el heartbeat
+            time.sleep(10)  # Cada 10 segundos enviar el heartbeat
+
+    def register_datanode(self):
+        """Registra el DataNode en el NameNode."""
+        try:
+            with grpc.insecure_channel(self.namenode_address) as channel:
+                stub = pb2_grpc.DFSStub(channel)
+                response = stub.RegisterDataNode(pb2.RegisterDataNodeRequest(data_node_address=f"localhost:{self.port}"))
+                if response.success:
+                    logging.info(f"DataNode {self.storage_dir} registrado correctamente en {self.namenode_address}")
+                else:
+                    logging.error(f"Fallo el registro del DataNode {self.storage_dir} en {self.namenode_address}")
+        except Exception as e:
+            logging.error(f"Error registrando DataNode en NameNode: {e}")
 
     def StoreBlock(self, request, context):
         """Almacena un bloque en el DataNode usando el formato nombreUsuario_nombreArchivo_blockid"""
@@ -74,6 +87,7 @@ class DataNode(pb2_grpc.DataNodeServicer):
             success = data_response.success
         return pb2.StoreBlockResponse(success=success, message=data_response.message)
 
+
     def ReadBlock(self, request, context):
         """Lee un bloque almacenado y lo devuelve al cliente"""
         block_path = os.path.join(self.storage_dir, request.block_path)
@@ -88,6 +102,9 @@ def serve(port, namenode_address):
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     datanode = DataNode(f"data_storage_{port}", port, namenode_address)  # Pasa el puerto al constructor
     
+    # Registrar el DataNode en el NameNode
+    datanode.register_datanode()
+
     # Iniciar el hilo del heartbeat
     heartbeat_thread = threading.Thread(target=datanode.send_heartbeat)
     heartbeat_thread.start()
@@ -115,4 +132,3 @@ if __name__ == "__main__":
     args = parser.parse_args()
     
     serve(args.port, args.namenode_address)
-

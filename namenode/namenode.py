@@ -30,16 +30,31 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 class NameNode(pb2_grpc.DFSServicer):
     def __init__(self):
         # Inicializamos el UserManager y el ciclo secuencial de DataNodes
-        self.data_nodes = ["localhost:50052", "localhost:50053", "localhost:50054", "localhost:50055"]
-        logging.info("Initializing NameNode with data nodes: %s", self.data_nodes)
-        self.node_iterator = cycle(self.data_nodes)
+        logging.info("Initializing NameNode...")
+        self.data_nodes = []  # Lista de DataNodes dinámica
+        self.node_iterator = None  # Inicializa el ciclo de nodos
         self.user_manager = UserManager()
         self.file_metadata = {}
-        
+
         # Inicializar los estados de los DataNodes
-        self.data_nodes_status = {node: True for node in self.data_nodes}  # Estado de los DataNodes (True si están activos)
-        self.data_nodes_last_heartbeat = {node: time.time() for node in self.data_nodes}  # Último heartbeat registrado
+        self.data_nodes_status = {}  # Estado de los DataNodes (True si están activos)
+        self.data_nodes_last_heartbeat = {}  # Último heartbeat registrado
         self.failed_data_nodes = set()  # Para rastrear los DataNodes que han fallado
+    
+    def RegisterDataNode(self, request, context):
+        """Permite a los DataNodes registrarse dinámicamente."""
+        data_node_address = request.data_node_address
+        if data_node_address not in self.data_nodes:
+            self.data_nodes.append(data_node_address)
+            self.data_nodes_status[data_node_address] = True
+            self.data_nodes_last_heartbeat[data_node_address] = time.time()
+            self.update_node_iterator()  # Actualizamos el iterador de DataNodes
+            logging.info(f"DataNode registrado: {data_node_address}")
+        return pb2.RegisterDataNodeResponse(success=True)
+
+    def update_node_iterator(self):
+        """Actualiza el iterador de nodos basado en los DataNodes registrados."""
+        self.node_iterator = cycle(self.data_nodes) if self.data_nodes else None
 
     def Heartbeat(self, request, context):
         """Actualizamos la hora del último heartbeat recibido."""

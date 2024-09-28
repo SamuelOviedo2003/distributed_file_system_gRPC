@@ -14,7 +14,17 @@ service DFS {
     rpc GetDataNodesForFile(GetDataNodesRequest) returns (GetDataNodesResponse);
     rpc RegisterFileMetadata(RegisterFileMetadataRequest) returns (RegisterFileMetadataResponse);
     rpc Heartbeat(HeartbeatRequest) returns (HeartbeatResponse);
+    rpc RegisterDataNode(RegisterDataNodeRequest) returns (RegisterDataNodeResponse);
 }
+
+message RegisterDataNodeRequest {
+    string data_node_address = 1;  // Dirección del DataNode
+}
+
+message RegisterDataNodeResponse {
+    bool success = 1;
+}
+
 
 message GetDataNodesRequest {
     int32 total_blocks = 1;
@@ -157,7 +167,6 @@ message MakeDirResponse {
     bool success = 1;
     string message = 2;
 }
-
 
 message HeartbeatRequest {
     string data_node_address = 1;
