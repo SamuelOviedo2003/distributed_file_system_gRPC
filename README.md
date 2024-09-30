@@ -153,13 +153,8 @@ El proyecto tiene una estructura modular que facilita el desarrollo y mantenimie
 
 </div>
 
-## 4. Descripción del ambiente de EJECUCIÓN (en producción)
 
-**Lenguaje de Programación:** Python
-
-**Versiones de Paquetes y Librerías:**
-
-## 5. Referencias:
+## 4. Referencias:
 - https://techvidvan.com/tutorials/how-hadoop-works-internally/
 - https://www.simplilearn.com/tutorials/hadoop-tutorial/what-is-hadoop
 - https://www.youtube.com/watch?v=CTdc67MMaL8&t=3s
