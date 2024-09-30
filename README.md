@@ -26,7 +26,7 @@ Tópicos Especiales en Telemática, 2024-2 Proyecto No 1
 
 **Presentación:** [Presentacion en CANVA](https://www.canva.com/design/DAGSD1IJskY/jalbEFKO-Uc4F6LgB-v-0Q/edit?utm_content=DAGSD1IJskY&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton )
 
-**Video:** [Video en Youtube](https://youtu.be/CKxsj5QSphs)
+**Video:** [Video en Youtube](https://www.youtube.com/watch?v=d6eNXH6oDZ8)
 
 <hr>
 
